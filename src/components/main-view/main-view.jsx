@@ -11,14 +11,14 @@ export const MainView = () => {
     fetch("https://movieapi-9rx2.onrender.com/movies")
       .then((response) => response.json())
       .then((data) => {
-        const moviesFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data.map((movie) => {
           return {
             id: movie._id,
             title: movie.Title,
             image: movie.ImagePath,
             description: movie.Description,
-            genre: movie.Genre.Name,
-            director: movie.Director.Name,
+            genre: movie.Genre,
+            director: movie.Director,
             release: movie.Release
           };
         });
