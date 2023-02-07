@@ -1,3 +1,4 @@
+// importing data from other views //
 import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
@@ -21,29 +22,25 @@ export const MainView = () => {
       headers: {Authorization: `Bearer ${token}`}
     })
       .then((response) => response.json())
-      .then((data) => {
-        /* console.log(data); replace below code with this? up until [token] 
-        OR 
-      .then((response) => response.json())
-     .then((movies) => {
-       setMovies(movies);
+      .then((movies) => {
+        setMovies(movies);
       });
-    }, [token]); */
-        const moviesFromApi = data.map((movie) => {
-          return {
-            id: movie._id,
-            title: movie.Title,
-            image: movie.ImagePath,
-            description: movie.Description,
-            genre: movie.Genre.Name,
-            director: movie.Director.Name,
-            release: movie.Release
-          };
-        });
+    }, [token]);
 
-        setMovies(moviesFromApi);
-      });
-  }, [token]);
+    const moviesFromApi = data.map((movie) => {
+        return {
+        id: movie._id,
+        title: movie.Title,
+        image: movie.ImagePath,
+        description: movie.Description,
+        genre: movie.Genre.Name,
+        director: movie.Director.Name,
+        release: movie.Release
+      };
+    });
+
+    setMovies(moviesFromApi);
+  }
 
   if (!user) {
     return (
@@ -99,5 +96,5 @@ export const MainView = () => {
       ))}
     </div>
   );
-};
+/* should have curly brakets to close ? */
 
