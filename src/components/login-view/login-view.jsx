@@ -34,6 +34,7 @@ export const LoginView = ({ onLoggedIn }) => {
     .catch((e) => {
       alert("Something went wrong");
     });
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -59,4 +60,4 @@ export const LoginView = ({ onLoggedIn }) => {
       <button type="submit">Submit</button>
     </form>
   );
-}}; /* added another curly bracket - check if not working */
+}; 
