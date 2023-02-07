@@ -1,7 +1,6 @@
-// importing data from other views //
 import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
-import { MovieView } from "../movie-view/movie-view";
+import { MovieView } from "../movie-view/movie-view"; 
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 
@@ -23,24 +22,20 @@ export const MainView = () => {
     })
       .then((response) => response.json())
       .then((movies) => {
-        setMovies(movies);
-      });
-    }, [token]);
-
-    const moviesFromApi = data.map((movie) => {
-        return {
-        id: movie._id,
-        title: movie.Title,
-        image: movie.ImagePath,
-        description: movie.Description,
-        genre: movie.Genre.Name,
-        director: movie.Director.Name,
-        release: movie.Release
-      };
-    });
-
-    setMovies(moviesFromApi);
-  }
+        const moviesFromApi = data.map((movie) => {
+          return {
+          id: movie._id,
+          title: movie.Title,
+          image: movie.ImagePath,
+          description: movie.Description,
+          genre: movie.Genre.Name,
+          director: movie.Director.Name,
+          release: movie.Release
+          }
+        });
+        setMovies(moviesFromApi);
+      })
+  }, [token])
 
   if (!user) {
     return (
@@ -87,7 +82,7 @@ export const MainView = () => {
     </button>
       {movies.map((movie) => (
         <MovieCard
-          key={movie.id}
+          key={movie._id}
           movie={movie}
           onMovieClick={(newSelectedMovie) => {
             setSelectedMovie(newSelectedMovie);
@@ -96,5 +91,5 @@ export const MainView = () => {
       ))}
     </div>
   );
-/* should have curly brakets to close ? */
+}
 
