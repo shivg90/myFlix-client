@@ -6,9 +6,10 @@ export const SignupView = () => {
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
 
-  const handleSubmit = (event) => {};
-    /* event.preventDefault();
-
+  const handleSubmit = (event) => {
+    
+    event.preventDefault(); 
+    
     const data = {
       Username: username,
       Password: password,
@@ -16,7 +17,7 @@ export const SignupView = () => {
       Birthday: birthday
     };
 
-    fetch("SIGNUP_URL", {
+    fetch("https://movieapi-9rx2.onrender.com/users", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -30,7 +31,7 @@ export const SignupView = () => {
         alert("Signup failed");
       }
     });
-  }; */
+  }; 
 
   return (
     <form onSubmit={handleSubmit}>
