@@ -47,7 +47,7 @@ export const MainView = () => {
         or
         <SignupView />
       </>
-    );
+    )
   }
 
   if (selectedMovie) {
