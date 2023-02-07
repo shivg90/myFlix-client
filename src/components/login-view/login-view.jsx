@@ -19,7 +19,8 @@ export const LoginView = ({ onLoggedIn }) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
-    }).then((response) => response.json())
+    })
+    .then((response) => response.json())
     .then((data) => {
       console.log("Login response: ", data);
       if (data.user) {
