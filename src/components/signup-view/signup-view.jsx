@@ -1,4 +1,4 @@
-import{ useState } from "react";
+import { useState } from "react";
 
 export const SignupView = () => {
   const [username, setUsername] = useState("");
@@ -6,6 +6,7 @@ export const SignupView = () => {
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
 
+  // validation of user signup
   const handleSubmit = (event) => {
     
     event.preventDefault(); 
@@ -27,13 +28,16 @@ export const SignupView = () => {
       if (response.ok) {
         alert("Signup successful");
         window.location.reload();
+
       } else {
         alert("Signup failed");
       }
     });
   }; 
 
+  // signup form with submit button
   return (
+    // handleSubmit is the callback of onSubmit, tells the login API to validate user and password
     <form onSubmit={handleSubmit}>
       <label>
         Username:
@@ -42,7 +46,7 @@ export const SignupView = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          minLength="3"
+          minLength="5"
         />
       </label>
       <label>

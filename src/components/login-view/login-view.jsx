@@ -4,8 +4,9 @@ export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // validation of user login
   const handleSubmit = (event) => {
-    // this prevents the default behavior of the form which is to reload the entire page
+    // prevents the default behavior of the form which is to reload the entire page
     event.preventDefault();
 
     const data = {
@@ -36,7 +37,9 @@ export const LoginView = ({ onLoggedIn }) => {
     });
   };
 
+  // login form with submit button
   return (
+    // handleSubmit is the callback of onSubmit, tells the login API to validate user and password
     <form onSubmit={handleSubmit}>
       <label>
         Username:

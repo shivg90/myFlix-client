@@ -12,6 +12,7 @@ export const MovieCard = ({ movie, onMovieClick }) => {
     );
   };
 
+  // validation of data types between prop and component
   MovieCard.propTypes = {
     movie: PropTypes.shape({
       title: PropTypes.string.isRequired,

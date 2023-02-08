@@ -13,6 +13,7 @@ export const MainView = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [loading, setLoading] = useState(false);
   
+  // useEffect hook allows React to perform side effects in component e.g fetching data
   useEffect(() => {
     if (!token) {
       return;
@@ -29,6 +30,7 @@ export const MainView = () => {
         console.log('data', data);
         const moviesFromApi = data.map((movie) => {
           return {
+          // value names match to API database
           id: movie._id,
           title: movie.Title,
           image: movie.ImagePath,
@@ -42,6 +44,7 @@ export const MainView = () => {
       })
   }, [token])
 
+  // user must first either login or signup
   if (!user) {
     return (
       <>
@@ -55,6 +58,7 @@ export const MainView = () => {
     )
   }
 
+  // displays movie-view when movie is selected (clicked)
   if (selectedMovie) {
     return (
       <>
@@ -67,6 +71,7 @@ export const MainView = () => {
     );
   }
 
+  // displays text message if list of movies is empty
   if (movies.length === 0) {
     return (
       <>
@@ -79,6 +84,7 @@ export const MainView = () => {
     );
   }
 
+  // displays movie-card with logout button, if user does not select a movie 
   return (
     // conditional rendering for loading statment
     loading ? (
