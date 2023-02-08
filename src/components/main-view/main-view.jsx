@@ -11,17 +11,22 @@ export const MainView = () => {
   const [token, setToken] = useState(storedToken? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
     if (!token) {
       return;
     }
-
+    // set loading before sending API request
+    setLoading(true);
     fetch("https://movieapi-9rx2.onrender.com/movies", {
       headers: {Authorization: `Bearer ${token}`}
     })
       .then((response) => response.json())
       .then((data) => {
+        // stops loading after response received
+        setLoading(false);
+        console.log('data', data);
         const moviesFromApi = data.map((movie) => {
           return {
           id: movie._id,
@@ -75,11 +80,18 @@ export const MainView = () => {
   }
 
   return (
+    // conditional rendering for loading statment
+    loading ? (
+      <p>Loading...</p>
+    ) : !movies || !movies.length ? (
+      <p>No movies found</p>
+    ) : (
     <div>
       <button onClick={() => { setUser(null); setToken(null); localStorage.clear();
       }}
     > Logout
     </button>
+    
       {movies.map((movie) => (
         <MovieCard
           key={movie._id}
@@ -90,6 +102,6 @@ export const MainView = () => {
         />
       ))}
     </div>
-  );
+  ));
 }
 
