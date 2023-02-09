@@ -70,7 +70,7 @@ export const SignupView = () => {
       <label>
         Birthday:
         <input
-          type="date"
+          type="text" 
           value={birthday}
           onChange={(e) => setBirthday(e.target.value)}
           required
