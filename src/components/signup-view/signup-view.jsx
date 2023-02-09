@@ -70,7 +70,7 @@ export const SignupView = () => {
       <label>
         Birthday:
         <input
-          type="text" 
+          type="date"
           id="txtDate"
           value={birthday}
           onBlur = "ValidateDOB()"
