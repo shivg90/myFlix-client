@@ -71,6 +71,7 @@ export const SignupView = () => {
         Birthday:
         <input
           type="text" 
+          id="txtDate"
           value={birthday}
           onChange={(e) => setBirthday(e.target.value)}
           required
