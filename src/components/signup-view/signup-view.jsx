@@ -72,7 +72,6 @@ export const SignupView = () => {
         <input
           type="date"
           value={birthday}
-          onBlur = "ValidateDOB()"
           onChange={(e) => setBirthday(e.target.value)}
           required
         />
