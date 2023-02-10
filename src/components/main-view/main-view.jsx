@@ -3,6 +3,7 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view"; 
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
+import Row from "react-bootstrap/Row";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -44,6 +45,53 @@ export const MainView = () => {
       })
   }, [token])
 
+   // 'if' statements are replaced by ternary operators '?:' - if true, if false, and combined into one peice of code wrapped in Row
+  return (
+    <Row>
+      {!user ? (
+        // user must first login or signup
+        <>
+          <LoginView onLoggedIn={(user, token) => {setUser(user); setToken(token)}} /> 
+          or
+          <SignupView />
+        </>
+        // displays movie-view when movie is clicked
+      ) : selectedMovie ? (
+        <MovieView 
+          movie={selectedMovie} 
+          onBackClick={() => setSelectedMovie(null)} 
+        // add logout button which also clears user, token and storage
+        />
+        // displays text message if list of movies is empty
+      ) : movies.length === 0 ? (
+        <div>The list is empty!</div>
+        // add logout button which also clears user, token and storage
+      ) : loading ? (
+        // displays movie-card with logout button, if user does not select a movie
+            <p>Loading...</p>
+          ) : !movies || !movies.length ? (
+            <p>No movies found</p>
+          ) : (
+            <>
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie._id}
+              movie={movie}
+              onMovieClick={(newSelectedMovie) => {
+                setSelectedMovie(newSelectedMovie);
+              // add logout button which also clears user, token and storage
+              }}
+            />
+          ))}
+        </>
+      )}
+    </Row>
+    );
+  };
+
+
+      
+  /* OLD CODE
   // user must first either login or signup
   if (!user) {
     return (
@@ -109,5 +157,5 @@ export const MainView = () => {
       ))}
     </div>
   ));
-}
+} */
 
