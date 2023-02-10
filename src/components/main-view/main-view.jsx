@@ -48,21 +48,25 @@ export const MainView = () => {
 
    // 'if' statements are replaced by ternary operators '?:' - if true, if false, and combined into one peice of code wrapped in Row
   return (
-    <Row>
+    <Row className="justify-content-md-center">
       {!user ? (
         // user must first login or signup
         <>
+          <Col md={5}>
           <LoginView onLoggedIn={(user, token) => {setUser(user); setToken(token)}} /> 
           or
           <SignupView />
+          </Col>
         </>
         // displays movie-view when movie is clicked
       ) : selectedMovie ? (
+        <Col md={8} style={{ border: "1px solid black" }}>
         <MovieView 
           movie={selectedMovie} 
           onBackClick={() => setSelectedMovie(null)} 
         // add logout button which also clears user, token and storage
         />
+        </Col>
         // displays text message if list of movies is empty
       ) : movies.length === 0 ? (
         <div>The list is empty!</div>
