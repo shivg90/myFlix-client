@@ -44,7 +44,7 @@ export const LoginView = ({ onLoggedIn }) => {
     // new code: Bootstrap
     // handleSubmit is the callback of onSubmit, tells the login API to validate user and password
     <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formUsername">
+      <Form.Group controlId="logInFormUsername">
         <Form.Label>Username:</Form.Label>
         <Form.Control
           type="text"
@@ -55,7 +55,7 @@ export const LoginView = ({ onLoggedIn }) => {
         />
       </Form.Group>
 
-      <Form.Group controlId="formPassword">
+      <Form.Group controlId="logInFormPassword">
         <Form.Label>Password:</Form.Label>
         <Form.Control
           type="password"
