@@ -5,6 +5,7 @@ import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -64,13 +65,13 @@ export const MainView = () => {
         <MovieView 
           movie={selectedMovie} 
           onBackClick={() => setSelectedMovie(null)} 
-        // add logout button which also clears user, token and storage
         />
+        <Button onClick={() => {setUser(null); setToken(null); localStorage.clear(); }}>Logout</Button>
         </Col>
         // displays text message if list of movies is empty
       ) : movies.length === 0 ? (
-        <div>The list is empty!</div>
-        // add logout button which also clears user, token and storage
+        <p>The list is empty!</p>
+        
       ) : loading ? (
         // displays movie-card with logout button, if user does not select a movie
             <p>Loading...</p>
@@ -84,11 +85,11 @@ export const MainView = () => {
               movie={movie}
               onMovieClick={(newSelectedMovie) => {
                 setSelectedMovie(newSelectedMovie);
-              // add logout button which also clears user, token and storage
               }}
             />
             </Col>
           ))}
+          <Button onClick={() => {setUser(null);}}>Logout</Button>
         </>
       )}
     </Row>
