@@ -66,7 +66,7 @@ export const MainView = () => {
           movie={selectedMovie} 
           onBackClick={() => setSelectedMovie(null)} 
         />
-        <Button onClick={() => {setUser(null); setToken(null); localStorage.clear(); }}>Logout</Button>
+        <Button variant="secondary" size="sm" onClick={() => {setUser(null); setToken(null); localStorage.clear(); }}>Logout</Button>
         </Col>
         // displays text message if list of movies is empty
       ) : movies.length === 0 ? (
@@ -89,7 +89,7 @@ export const MainView = () => {
             />
             </Col>
           ))}
-          <Button onClick={() => {setUser(null);}}>Logout</Button>
+          <Button variant="secondary" size="sm" onClick={() => {setUser(null);}}>Logout</Button>
         </>
       )}
     </Row>
