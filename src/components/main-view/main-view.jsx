@@ -89,7 +89,7 @@ export const MainView = () => {
             />
             </Col>
           ))}
-          <Button variant="secondary" size="sm" onClick={() => {setUser(null);}}>Logout</Button>
+          <Button md="1" variant="secondary" size="sm" onClick={() => {setUser(null);}}>Logout</Button>
         </>
       )}
     </Row>
