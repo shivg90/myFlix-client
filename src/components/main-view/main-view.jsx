@@ -64,18 +64,24 @@ export const MainView = () => {
         <MovieView 
           movie={selectedMovie} 
           onBackClick={() => setSelectedMovie(null)} 
-        // add logout button which also clears user, token and storage
         />
+        <Button onClick={() => { setUser(null); setToken(null); localStorage.clear();}}>Logout</Button>
         </Col>
         // displays text message if list of movies is empty
       ) : movies.length === 0 ? (
+        <Col >
         <div>The list is empty!</div>
-        // add logout button which also clears user, token and storage
+        <Button onClick={() => { setUser(null); setToken(null); localStorage.clear();}}>Logout</Button>
+        </Col>
+        
       ) : loading ? (
         // displays movie-card with logout button, if user does not select a movie
             <p>Loading...</p>
           ) : !movies || !movies.length ? (
+            <Col >
             <p>No movies found</p>
+            <Button onClick={() => { setUser(null); setToken(null); localStorage.clear();}}>Logout</Button>
+            </Col>
           ) : (
             <>
           {movies.map((movie) => (
@@ -84,9 +90,9 @@ export const MainView = () => {
               movie={movie}
               onMovieClick={(newSelectedMovie) => {
                 setSelectedMovie(newSelectedMovie);
-              // add logout button which also clears user, token and storage
               }}
             />
+            <Button onClick={() => { setUser(null); setToken(null); localStorage.clear();}}>Logout</Button>
             </Col>
           ))}
         </>
