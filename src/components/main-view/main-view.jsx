@@ -55,7 +55,7 @@ export const MainView = () => {
         <>
           <Col md={5}>
           <LoginView onLoggedIn={(user, token) => {setUser(user); setToken(token)}} /> 
-          or
+          
           <SignupView />
           </Col>
         </>
