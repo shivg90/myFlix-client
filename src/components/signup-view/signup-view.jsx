@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Card, CardGroup, Col, Container, Row } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 export const SignupView = () => {
   const [username, setUsername] = useState("");
@@ -37,6 +40,74 @@ export const SignupView = () => {
 
   // signup form with submit button
   return (
+    // new code: Bootstrap
+    // handleSubmit is the callback of onSubmit, tells the login API to validate user and password
+    <Container >
+      <Row>
+        <Col>
+          <CardGroup>
+            <Card style={{marginTop: 50}}>
+            <Card.Body>
+              <Card.Title>User Registration</Card.Title>
+              <Form onSubmit={handleSubmit}>  
+              <Form.Group controlId="signUpFormUsername">
+                <Form.Label>Username:</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  minLength="5" 
+                  placeholder="Enter username (min 5 characters)"
+
+                />
+              </Form.Group>
+
+              <Form.Group controlId="signUpFormPassword">
+                <Form.Label>Password:</Form.Label>
+                <Form.Control
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Password"
+                />
+              </Form.Group>
+
+              <Form.Group controlId="signUpFormEmail">
+                <Form.Label>Email:</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="Enter email"
+                />
+              </Form.Group>
+
+              <Form.Group controlId="signUpFormBirthday">
+                <Form.Label>Birthday:</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={birthday}
+                  onChange={(e) => setBirthday(e.target.value)}
+                  required
+                />
+              </Form.Group>
+
+              <Button variant="primary" type="submit" style={{ margin: '0.7rem'}}>
+                Submit
+              </Button>
+              </Form>
+            </Card.Body>
+            </Card>
+          </CardGroup>
+        </Col>
+      </Row>
+    </Container>
+);
+};
+    /* old code
     // handleSubmit is the callback of onSubmit, tells the login API to validate user and password
     <form onSubmit={handleSubmit}>
       <label>
@@ -79,4 +150,4 @@ export const SignupView = () => {
       <button type="submit">Submit</button>
     </form>
   );
-}; 
+}; */
