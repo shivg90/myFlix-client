@@ -53,21 +53,21 @@ export const MainView = () => {
 
   return (
     <BrowserRouter>
-    <NavigationBar>
+    <NavigationBar
         user={user}
         onLoggedOut={() => {
           setUser(null);
           setToken(null);
           localStorage.clear();
         }}
-      </NavigationBar>
+      />
       <Row className="justify-content-md-center">
         <Routes>
           <Route
-            path="/users"
+            path="/signup"
             element={
               <>
-                {user ? (
+                { user ? (
                   <Navigate to="/" /> // if no user 'Navigate' redirects to login page
                 ) : (
                   <Col md={5}>
@@ -82,7 +82,7 @@ export const MainView = () => {
             path="/login"
             element={
               <>
-                {user ? (
+                { user ? (
                   <Navigate to="/" />
                 ) : (
                   <Col md={5}>
@@ -110,7 +110,7 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/profile" 
+            path="/users" 
             element={
               <>
                 {!user ? (

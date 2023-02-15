@@ -50,16 +50,13 @@ export const ProfileView = ({ user, movies }) => {
               <Card.Text>
                 <div>
                 <div>
-                  <span>Username: </span>
-                  <span>{username}</span>
+                  <span>Username: {user.Username}</span>
                 </div>
                 <div>
-                  <span>Birthday: </span>
-                  <span>{birthday}</span>
+                  <span>Birthday: {user.Birthday} </span>
                 </div>
                 <div>
-                  <span>Email: </span>
-                  <span>{email}</span>
+                  <span>Email: {user.Email} </span>
                 </div>
                 </div>
                 </Card.Text>
@@ -123,16 +120,17 @@ export const ProfileView = ({ user, movies }) => {
           </Card>
         </Col>
 
-    </Row>
-
-    <Row>
-      <Col>
-        <h3>Favorite Movies</h3>
-        <MovieCard
-            favMovies={favMovies}
-        />
-      </Col>
-    </Row>
-</Container>
+      </Row>
+    </Container>
 );
 };
+
+    /* <Row>
+      <Col>
+        <h3>Favorite Movies</h3>
+         <MovieCard
+            favMovies={favMovies}
+        /> 
+      </Col>
+    </Row> */
+
