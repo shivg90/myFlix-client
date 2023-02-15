@@ -8,8 +8,9 @@ export const ProfileView = ({ user, movies }) => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
+    const [token] = useState("");
 
-    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id));
+    const favoriteMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id));
 
     const handleSubmit = (event) => {
     
@@ -22,12 +23,13 @@ export const ProfileView = ({ user, movies }) => {
           Birthday: birthday
         };
 
-        fetch("https://movieapi-9rx2.onrender.com/users/${user.Username}", {
+        fetch("https://movieapi-9rx2.onrender.com/users", {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
             "Content-Type": "application/json"
-        }
+            }
+    
         }).then((response) => {
           if (response.ok) {
             alert("Update successful");
@@ -39,6 +41,24 @@ export const ProfileView = ({ user, movies }) => {
       });
     }; 
 
+    const handleDeregister = () => {
+    
+        fetch("https://movieapi-9rx2.onrender.com/users/${user.Username}", {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }).then((response) => {
+          if (response.ok) {
+            alert("Account successfully deleted");
+            localStorage.clear();
+            window.location.reload(); 
+          } else {
+            alert("Something went wrong");
+          }
+        });
+      };
 
   return (
     <Container >
@@ -67,7 +87,7 @@ export const ProfileView = ({ user, movies }) => {
         <Col>
           <Card style={{marginTop: 30}}>
           <Card.Body>
-              <Card.Title>Update your MyFlix Profile</Card.Title>
+              <Card.Title>Update your Information</Card.Title>
               <Form onSubmit={handleSubmit}>  
               <Form.Group controlId="updateFormUsername">
                 <Form.Label>New Username:</Form.Label>
@@ -112,25 +132,38 @@ export const ProfileView = ({ user, movies }) => {
               </Form.Group>
 
               <Button variant="primary" type="submit" style={{ margin: '0.7rem'}}>
-                Submit
+                Save Changes
               </Button>
               </Form>
 
             </Card.Body>
           </Card>
+          <Button onClick={() => handleDeregister(user._id)} className="button-delete mt-3" type="submit" variant="danger" >Delete Account</Button>
         </Col>
 
       </Row>
-    </Container>
-);
+
+      <Row className="justify-contents-center">
+        <h3>Favorite movies:</h3>
+            {favoriteMovies.length === 0 ? (
+              <span>There are no movies in your favorites. </span> 
+              ) : (
+              <>
+              {favoriteMovies.map ((movie) => (
+              <Col xs={12} md={6} lg={4} xl={3} key={movie.id} className="fav-movie">
+                <MovieCard movie={movie} />
+              </Col>
+            
+            ))}
+              </>
+           )}            
+      </Row>    
+  </Container>
+  );
 };
 
-    /* <Row>
-      <Col>
-        <h3>Favorite Movies</h3>
-         <MovieCard
-            favMovies={favMovies}
-        /> 
-      </Col>
-    </Row> */
+/* <Button onClick = {()=>removeFav(movie.id)}> Remove </Button> */
+
+
+ 
 
