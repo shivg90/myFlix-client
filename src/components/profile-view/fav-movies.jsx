@@ -1,29 +1,49 @@
 import React from "react";
-import { Button, Link } from "react-bootstrap";
+import { Button, Link, Figure, Col, Row, Card } from "react-bootstrap";
 
 
 export const FavoritesView = ({favMovies, removeFav}) => {
-
+  
 return (
-    <div>
-        <h3>Favorite movies:</h3>
-            {favMovies.map ((movie) => {
-              return(
-                <div key={movie._id}>
-                    <img src={movie.ImagePath} />
-                    <Link to={"/movies/${movie._id"}>
-                        <h4>{movie.Title}</h4>
+  <Card>
+    <Card.Body>
+      <Row>
+        {favMovies.length === 0 ?(
+          <h4>You haven't added any movies! </h4>
+        ) : (
+          <>  
+            {favMovies.map((movies)=>(
+              <Col xs={12} md={6} lg={3} key={movies._id} className="fav-movie">
+                  <Figure>
+                    <Link to = {"/movies/${_id}"}>
+                      <Figure.Image  
+                        src={movies.ImagePath} 
+                        alt= {movies.Title}
+                      />
+                      <Figure.Caption>
+                      {movies.Title}
+                      </Figure.Caption>
                     </Link>
-                    <Button variant="secondary" size="xs" onClick = {()=>removeFav(movie._id)}> Remove from Favorites </Button> 
-                </div>  
-              )
-            })
-        }
-    </div>  
-)
-}
+                    </Figure>
 
-export default FavoritesView
+                    <Button onClick = {()=>removeFav(movies._id)}> Remove </Button>
+
+              </Col>
+            ))}              
+          </>
+          )}
+      </Row>
+    </Card.Body>
+  </Card>
+);
+};
+
+
+
+
+
+
+// export default FavoritesView
 
 /* 
 return (

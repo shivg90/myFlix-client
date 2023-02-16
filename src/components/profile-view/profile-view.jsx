@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { FavoritesView } from "../profile-view/fav-movies";
+import { UserInfo } from "./user-info";
 
-export const ProfileView = ({ user, movies }) => {
+export const ProfileView = ({ user,movies}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -11,28 +11,28 @@ export const ProfileView = ({ user, movies }) => {
     const [token] = useState("");
 
     const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id))
-        
-    const removeFav = (id) => {
-        fetch("https://movieapi-9rx2.onrender.com/users/${user._id}/favorites",
-            {
-              method: "DELETE",
-              headers: {
-                  Authorization: `Bearer ${localStorage.getItem('token')}`, 
-                  "Content-Type": "application/json",
-              },
-            }  
-        ).then((response)=> response.json())
-        .then((data)=>{
-            if(data.newUser){
-                localStorage.setItem('user', JSON.stringify(data.newUser));
-                window.location.reload();
-            }else{
-                alert('there was an issue removing the movie.')
-            }
-        }).catch((e)=>console.log(e));
-    }
 
-    const handleUpdates = (event) => {
+    const removeFav = (id) => {
+      fetch("https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${id}",
+              {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`, 
+                    "Content-Type": "application/json",
+                },
+              }  
+          ).then((response)=> response.json())
+          .then((data)=>{
+              if(data.newUser){
+                  localStorage.setItem('user', JSON.stringify(data.newUser));
+                  window.location.reload();
+              }else{
+                  alert('there was an issue removing the movie.')
+              }
+          }).catch((e)=>console.log(e));
+      }
+
+    const handleUpdate = (event) => {
     
         event.preventDefault(); 
         
@@ -47,27 +47,32 @@ export const ProfileView = ({ user, movies }) => {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
-            "Content-Type": "application/json"
-            }
+            "Content-Type": "application/json",
+            Authorization : `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(data),
     
-        }).then((response) => {
-          if (response.ok) {
-            alert("Update successful");
-            window.location.reload();
+        }).then((response)=>response.json())
+        .then((data)=>{
+          if(data.newUser){
+              localStorage.setItem("user", JSON.stringify(data.newUser));
+              alert('Update successful!')
+              window.location.reload();
+          }else{
+              alert('Update failed!')
+          }
+      }).catch((e)=>{
+          console.log(e);
+      })
+  }
 
-        } else {
-          alert("Update failed");
-        }
-      });
-    }; 
-
-    const handleDeregister = () => {
+    const handleDeregister = (username) => {
     
-        fetch("https://movieapi-9rx2.onrender.com/users/${user.Username}", {
+        fetch("https://movieapi-9rx2.onrender.com/users/${username}", {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization : `Bearer ${localStorage.getItem('token')}`
           }
         }).then((response) => {
           if (response.ok) {
@@ -77,44 +82,36 @@ export const ProfileView = ({ user, movies }) => {
           } else {
             alert("Something went wrong");
           }
-        });
-      };
+        }).catch((e)=>{
+          console.log(e);
+      })
+    };
 
   return (
     <Container >
       <Row>
-        <Col>
+        <Col xs={12} sm={4}>
           <Card style={{marginTop: 30}}>
             <Card.Body>
-              <Card.Title>MyFlix Profile</Card.Title>
+              <Card.Title>My Information</Card.Title>
               <Card.Text>
-                <div>
-                <div>
-                  <span>Username: {user.Username}</span>
-                </div>
-                <div>
-                  <span>Birthday: {user.Birthday} </span>
-                </div>
-                <div>
-                  <span>Email: {user.Email} </span>
-                </div>
-                </div>
-                </Card.Text>
+              <UserInfo username={user.Username} email={user.Email} handleDeregister={handleDeregister} />
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
 
-        <Col>
+        <Col xs={12} sm={8}>
           <Card style={{marginTop: 30}}>
           <Card.Body>
-              <Card.Title>Update your Information</Card.Title>
-              <Form onSubmit={handleUpdates} className="w-100">  
+              <Card.Title>Update Information</Card.Title>
+              <Form className="w-100" onSubmit={handleUpdate}> 
               <Form.Group controlId="updateFormUsername">
                 <Form.Label>New Username:</Form.Label>
                 <Form.Control
                   type="text"
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)} 
+                  defaultValue={username}
+                  onChange={event => setUsername(event.target.value)} // onChange={event => handleUpdates(event)} ^ Form line: onSubmit={(event) => handleSubmit(event)}  
                   minLength="5" 
                   placeholder="Enter username (min 5 characters)"
 
@@ -125,8 +122,8 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Password:</Form.Label>
                 <Form.Control
                   type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
+                  defaultValue=''
+                  onChange={event => setPassword(event.target.value)}
                   placeholder="Password"
 
                 />
@@ -136,8 +133,8 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Email:</Form.Label>
                 <Form.Control
                   type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  defaultValue={email}
+                  onChange={event => setEmail(event.target.value)}
                   placeholder="Enter email"
                 />
               </Form.Group>
@@ -146,25 +143,33 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Birthday:</Form.Label>
                 <Form.Control
                   type="date"
-                  value={birthday}
-                  onChange={(event) => setBirthday(event.target.value)}
+                  defaultValue={birthday}
+                  onChange={event => setBirthday(event.target.value)}
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" style={{ margin: '0.7rem'}}>
+              <Button variant="primary" type="submit" style={{ margin: '0.7rem'}} onClick={handleUpdate}>
                 Save Changes
               </Button>
               </Form>
 
             </Card.Body>
           </Card>
-          <Link to="/login">
-          <Button onClick={() => handleDeregister(user._id)} className="button-delete mt-3" type="submit" variant="danger" >Delete Account</Button>
-          </Link>
         </Col>
 
       </Row>
-      <FavoritesView favMovies={favMovies} removeFav={removeFav}/>
+      <>
+        <Row>
+            <Col xs={12}>
+              <h4>Favorite Movies</h4>
+            </Col>
+            <FavoritesView 
+              favMovies={favMovies}
+              removeFav={removeFav}
+            />
+        </Row>
+                
+      </>
   </Container>
   );
 };
