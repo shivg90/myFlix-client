@@ -1,8 +1,9 @@
 import React from "react";
 import { Button, Link, Figure, Col, Row, Card } from "react-bootstrap";
+import { ProfileView } from "../profile-view/profile-view";
+import { MovieCard } from "../movie-card/movie-card";
 
-
-export const FavoritesView = ({favMovies, removeFav}) => {
+export const FavMovies = ({ favMovies, removeFav }) => { //favMovies, removeFav
   
 return (
   <Card>
@@ -12,22 +13,10 @@ return (
           <h4>You haven't added any movies! </h4>
         ) : (
           <>  
-            {favMovies.map((movies)=>(
-              <Col xs={12} md={6} lg={3} key={movies._id} className="fav-movie">
-                  <Figure>
-                    <Link to = {"/movies/${_id}"}>
-                      <Figure.Image  
-                        src={movies.ImagePath} 
-                        alt= {movies.Title}
-                      />
-                      <Figure.Caption>
-                      {movies.Title}
-                      </Figure.Caption>
-                    </Link>
-                    </Figure>
-
-                    <Button onClick = {()=>removeFav(movies._id)}> Remove </Button>
-
+            {favMovies.map((movie)=>(
+              <Col xs={12} md={6} lg={3} key={movie._id} className="fav-movie">
+                  <MovieCard movie={movie} />
+                  <Button onClick = {()=>removeFav(movie._id)}> Remove </Button>
               </Col>
             ))}              
           </>
@@ -39,7 +28,18 @@ return (
 };
 
 
-
+/* OLD CODE was in between <Col> where moviecard is
+<Figure>
+      <Link to = {"/movies/${_id}"}>
+        <Figure.Image  
+          src={movie.ImagePath} 
+          alt= {movie.Title}
+        />
+        <Figure.Caption>
+        {movie.Title}
+        </Figure.Caption>
+        </Link>
+  /Figure> */
 
 
 

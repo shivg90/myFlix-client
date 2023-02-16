@@ -1,17 +1,48 @@
-import { useState } from "react";
-import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
-import { FavoritesView } from "../profile-view/fav-movies";
+import { useState, useEffect } from "react";
+import { MovieCard } from "../movie-card/movie-card";
+import { FavMovies } from "../profile-view/fav-movies";
 import { UserInfo } from "./user-info";
+import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 
-export const ProfileView = ({ user,movies}) => {
+
+export const ProfileView = ({ user, movies }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
     const [token] = useState("");
 
-    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id))
+    const [favoriteMovies, setFavoriteMovies] = useState([]);
 
+// const storedToken = localStorage.getItem("token");
+//  const storedUser = localStorage.getItem("user");
+//  const [token] = useState(storedToken ? storedToken : null);
+
+    // Show user details on the profile view (?)
+    const getUser = (token) => {
+      fetch("https://movieapi-9rx2.onrender.com/users/${user.Username}", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}`},
+      }).then(response => response.json())
+      .then((response) => {
+        console.log("getUser response", response)
+        setUsername(response.Username);
+        setEmail(response.Email);
+        setPassword(response.Password);
+        setBirthday(response.Birthday);
+        setFavoriteMovies(response.FavoriteMovies)
+      })
+    }
+    console.log("userFavMov", favoriteMovies)
+
+    useEffect(()=> {
+      getUser(token);
+    },[])
+
+    // apply filter to favorite movie list
+    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id));
+
+    // remove movie from fav
     const removeFav = (id) => {
       fetch("https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${id}",
               {
@@ -32,6 +63,7 @@ export const ProfileView = ({ user,movies}) => {
           }).catch((e)=>console.log(e));
       }
 
+    // updates user info
     const handleUpdate = (event) => {
     
         event.preventDefault(); 
@@ -66,6 +98,7 @@ export const ProfileView = ({ user,movies}) => {
       })
   }
 
+    // deletes user account
     const handleDeregister = (username) => {
     
         fetch("https://movieapi-9rx2.onrender.com/users/${username}", {
@@ -86,7 +119,7 @@ export const ProfileView = ({ user,movies}) => {
           console.log(e);
       })
     };
-
+// returns 1. rendered userinfo component 2. update form 3. rendered favorites from fav-movies component
   return (
     <Container >
       <Row>
@@ -95,7 +128,7 @@ export const ProfileView = ({ user,movies}) => {
             <Card.Body>
               <Card.Title>My Information</Card.Title>
               <Card.Text>
-              <UserInfo username={user.Username} email={user.Email} handleDeregister={handleDeregister} />
+              <UserInfo username={user.Username} email={user.Email} handleDeregister={handleDeregister} /> 
               </Card.Text>
             </Card.Body>
           </Card>
@@ -163,7 +196,7 @@ export const ProfileView = ({ user,movies}) => {
             <Col xs={12}>
               <h4>Favorite Movies</h4>
             </Col>
-            <FavoritesView 
+            <FavMovies 
               favMovies={favMovies}
               removeFav={removeFav}
             />
