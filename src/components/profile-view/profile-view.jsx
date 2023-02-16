@@ -10,9 +10,9 @@ export const ProfileView = ({ user, movies }) => {
     const [birthday, setBirthday] = useState("");
     const [token] = useState("");
 
-    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id))
+    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id))
         
-    const removeFav = () => {
+    const removeFav = (id) => {
         fetch("https://movieapi-9rx2.onrender.com/users/${user._id}/favorites",
             {
               method: "DELETE",
