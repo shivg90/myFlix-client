@@ -6,13 +6,13 @@ import './movie-card.scss';
 
 export const MovieCard = ({ movie }) => {
   return (
-    <Card className="h-100">
+    <Card className="h-100" style={{marginTop: 20}}>
       <Card.Img className="card-image" variant="top" src={movie.image} />
       <Card.Body>
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text className="card-text">{movie.description}</Card.Text>
         <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-          <Button variant="link" className="open-button" style={{ cursor: "pointer" }}>Open</Button>
+          <Button variant="link" className="open-button" style={{ cursor: "pointer" }}>See more</Button>
         </Link>
       </Card.Body>
     </Card>

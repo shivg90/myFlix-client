@@ -86,7 +86,7 @@ export const MainView = () => {
                   <Navigate to="/" />
                 ) : (
                   <Col md={5}>
-                    <LoginView onLoggedIn={(user) => setUser(user)} /> 
+                    <LoginView onLoggedIn={(user) => {setUser(user); setToken(token);}} /> 
                   </Col>
                 )}
               </>
@@ -94,7 +94,7 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/movies/:movieId" //check this endpoint matches yours
+            path="/movies/:movieId" 
             element={
               <>
                 {!user ? (
@@ -110,7 +110,7 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/users" 
+            path="/users" //"/profile"
             element={
               <>
                 {!user ? (
@@ -134,7 +134,7 @@ export const MainView = () => {
                 ) : (
                   <>
                     {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.id} md={3}>
+                      <Col className="mb-4" key={movie._id} md={3}>
                         <MovieCard movie={movie} />
                       </Col>
                     ))}

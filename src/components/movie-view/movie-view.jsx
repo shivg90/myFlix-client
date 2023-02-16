@@ -34,7 +34,7 @@ export const MovieView = ({ movies }) => {
       <Container > 
         <Row> 
           <Col md={12}> 
-            <Card >
+            <Card style={{marginTop: 30}}>
               <Card.Img variant="top" src={movie.image} className="w-100" />
               <Card.Body >
                 <Card.Title>{movie.title}</Card.Title>
@@ -57,10 +57,10 @@ export const MovieView = ({ movies }) => {
                   <span>{movie.release}</span>
                 </div>
                 <Link to={`/`}>
-                  <button className="back-button" style={{ cursor: "pointer" }}>Back</button>
+                  <Button className="back-button" style={{ cursor: "pointer" }}>Back</Button>
                 </Link>
                 
-                <Button onClick= {()=>addFav(movies._id)} className="fav-button" variant="secondary" size="sm" type="submit" style={{ cursor: "pointer" }} >Favorite</Button>
+                <Button onClick= {()=>addFav(movies._id)} className="fav-button" variant="secondary" type="submit" style={{ cursor: "pointer" }} >Favorite</Button>
                 
                 </div>
                 </Card.Text>
