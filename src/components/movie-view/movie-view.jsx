@@ -1,4 +1,4 @@
-import { Card, Container, Row, Col} from 'react-bootstrap';
+import { Card, Container, Row, Col, Button} from 'react-bootstrap';
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import './movie-view.scss';
@@ -8,6 +8,37 @@ export const MovieView = ({ movies }) => {
 
   const movie = movies.find((b) => b.id === movieId); 
 
+  // trying to add click event to favorite button
+  const handleAddFavorite = (event) => {
+
+  const data = {
+    FavoriteMovie: movieId,
+  };
+
+  fetch("https://movieapi-9rx2.onrender.com/users/${userId}/favorites", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("movie added to favorites");
+    if (data.user) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      onLoggedIn(data.user, data.token);
+    } else {
+      alert("movie could not be added");
+    }
+  })
+  .catch((e) => {
+    alert("Something went wrong");
+  });
+};
+ 
+// movie view render
     return (
       <Container > 
         <Row> 
@@ -37,6 +68,9 @@ export const MovieView = ({ movies }) => {
                 <Link to={`/`}>
                   <button className="back-button" style={{ cursor: "pointer" }}>Back</button>
                 </Link>
+                
+                <Button onClick={() => handleAddFavorite()} className="fav-button" variant="secondary" size="sm" type="submit" style={{ cursor: "pointer" }} >Favorite</Button>
+                
                 </div>
                 </Card.Text>
               </Card.Body> 
