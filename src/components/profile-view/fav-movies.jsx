@@ -3,19 +3,21 @@ import { Button, Link, Figure, Col, Row, Card } from "react-bootstrap";
 import { ProfileView } from "../profile-view/profile-view";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const FavMovies = ({ favMovies, removeFav }) => { //favMovies, removeFav
+export const FavMovies = ({ favMovies, removeFav }) => { 
   
 return (
   <Card>
     <Card.Body>
       <Row>
-        {favMovies.length === 0 ?(
+        {favMovies.length === 0 ? ( 
           <h4>You haven't added any movies! </h4>
         ) : (
           <>  
             {favMovies.map((movie)=>(
               <Col xs={12} md={6} lg={3} key={movie._id} className="fav-movie">
-                  <MovieCard movie={movie} />
+                  <MovieCard 
+                    key={movie._id}
+                    movie={movie} />
                   <Button onClick = {()=>removeFav(movie._id)}> Remove </Button>
               </Col>
             ))}              

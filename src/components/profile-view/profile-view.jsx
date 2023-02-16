@@ -1,57 +1,36 @@
 import { useState, useEffect } from "react";
-import { MovieCard } from "../movie-card/movie-card";
 import { FavMovies } from "../profile-view/fav-movies";
 import { UserInfo } from "./user-info";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 
 
 export const ProfileView = ({ user, movies }) => {
+    const [updatedUser, setUpdatedUser] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
     const [token] = useState("");
 
-    const [favoriteMovies, setFavoriteMovies] = useState([]);
+   // const [favoriteMovies, setFavoriteMovies] = useState([]);
 
 // const storedToken = localStorage.getItem("token");
 //  const storedUser = localStorage.getItem("user");
-//  const [token] = useState(storedToken ? storedToken : null);
-
-    // Show user details on the profile view (?)
-    const getUser = (token) => {
-      fetch("https://movieapi-9rx2.onrender.com/users/${user.Username}", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}`},
-      }).then(response => response.json())
-      .then((response) => {
-        console.log("getUser response", response)
-        setUsername(response.Username);
-        setEmail(response.Email);
-        setPassword(response.Password);
-        setBirthday(response.Birthday);
-        setFavoriteMovies(response.FavoriteMovies)
-      })
-    }
-    console.log("userFavMov", favoriteMovies)
-
-    useEffect(()=> {
-      getUser(token);
-    },[])
+//  const [token] = useState(storedToken ? storedToken : null); 
 
     // apply filter to favorite movie list
     const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id));
 
     // remove movie from fav
     const removeFav = (id) => {
-      fetch("https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${id}",
-              {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`, 
-                    "Content-Type": "application/json",
-                },
-              }  
+      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`, 
+            "Content-Type": "application/json",
+          },
+        }  
           ).then((response)=> response.json())
           .then((data)=>{
               if(data.newUser){
@@ -64,9 +43,9 @@ export const ProfileView = ({ user, movies }) => {
       }
 
     // updates user info
-    const handleUpdate = (event) => {
+    const handleUpdate = (e) => {
     
-        event.preventDefault(); 
+        e.preventDefault(); 
         
         const data = {
           Username: username,
@@ -75,51 +54,87 @@ export const ProfileView = ({ user, movies }) => {
           Birthday: birthday
         };
 
-        fetch("https://movieapi-9rx2.onrender.com/users/${user.Username}", {
+        fetch(`https://movieapi-9rx2.onrender.com/users/${user.username}`, {
             method: "PUT",
-            body: JSON.stringify(data),
             headers: {
-            "Content-Type": "application/json",
-            Authorization : `Bearer ${localStorage.getItem('token')}`
+            Authorization : `Bearer ${token}`,
+            "Content-Type": "application/json"
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data)
     
         }).then((response)=>response.json())
-        .then((data)=>{
-          if(data.newUser){
-              localStorage.setItem("user", JSON.stringify(data.newUser));
-              alert('Update successful!')
-              window.location.reload();
+        .then((data)=> { console.log(data);
+          if(data.ok){
+            alert('Update successful!');
+            setUpdatedUser(true);
+            window.location.reload();
+            localStorage.setItem("user", JSON.stringify(data.user));
+     
           }else{
               alert('Update failed!')
           }
       }).catch((e)=>{
+          alert("Something went wrong!");
           console.log(e);
       })
   }
 
+  // then useEffect for when/if user decides to update their info
+
+    useEffect(() => {
+      if(updatedUser){
+        fetch(`https://movieapi-9rx2.onrender.com/users/${user.username}`,{
+              method: "GET",
+              headers:{
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+              },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if(data){
+              setUsername(data.username);
+              setPassword(data.Password);
+              setEmail(data.Email);
+              setBirthday(data.Birthday);
+              setUpdatedUser(false);
+            }
+        })
+        .catch((e) => {
+          alert('Something went wrong!');
+          console.log(e);
+        });
+      }
+  },[updatedUser])
+
     // deletes user account
-    const handleDeregister = (username) => {
+    const handleDeregister = () => { //remove username from parenthesis
     
-        fetch("https://movieapi-9rx2.onrender.com/users/${username}", {
+        fetch(`https://movieapi-9rx2.onrender.com/users/${user.username}`, {
           method: "DELETE",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            Authorization : `Bearer ${localStorage.getItem('token')}`
           }
-        }).then((response) => {
-          if (response.ok) {
+        }).then((response) => response.json())
+          .then((data) => {
+            if (data.ok){
             alert("Account successfully deleted");
-            localStorage.clear();
-            window.location.reload(); 
+            <Navigate to="/signup" /> // replace window reload with navigate
+
           } else {
-            alert("Something went wrong");
+            alert("Deletion failed!");
+            window.location.reload();
           }
         }).catch((e)=>{
+          alert("Something went wrong")
+          window.location.reload();
           console.log(e);
+
       })
     };
-// returns 1. rendered userinfo component 2. update form 3. rendered favorites from fav-movies component
+
+// returns 1. rendered userinfo component, 2. update form, 3. rendered favorites from fav-movies component
   return (
     <Container >
       <Row>
@@ -143,7 +158,7 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Username:</Form.Label>
                 <Form.Control
                   type="text"
-                  defaultValue={username}
+                  value={username}
                   onChange={event => setUsername(event.target.value)} // onChange={event => handleUpdates(event)} ^ Form line: onSubmit={(event) => handleSubmit(event)}  
                   minLength="5" 
                   placeholder="Enter username (min 5 characters)"
@@ -155,7 +170,7 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Password:</Form.Label>
                 <Form.Control
                   type="password"
-                  defaultValue=''
+                  value=''
                   onChange={event => setPassword(event.target.value)}
                   placeholder="Password"
 
@@ -166,7 +181,7 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Email:</Form.Label>
                 <Form.Control
                   type="email"
-                  defaultValue={email}
+                  value={email}
                   onChange={event => setEmail(event.target.value)}
                   placeholder="Enter email"
                 />
@@ -176,7 +191,7 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Birthday:</Form.Label>
                 <Form.Control
                   type="date"
-                  defaultValue={birthday}
+                  value={birthday}
                   onChange={event => setBirthday(event.target.value)}
                 />
               </Form.Group>

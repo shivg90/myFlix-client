@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Card, CardGroup, Col, Container, Row, Button, Form} from "react-bootstrap";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate } from "react-router";
 
 export const SignupView = ({onLoggedIn}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
-  const navigate = useNavigate();
+  
 
   // validation of user signup
   const handleSubmit = (event) => {
@@ -21,7 +21,7 @@ export const SignupView = ({onLoggedIn}) => {
       Birthday: birthday
     };
 
-    fetch("https://movieapi-9rx2.onrender.com/users", {
+    fetch(`https://movieapi-9rx2.onrender.com/users`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -37,7 +37,7 @@ export const SignupView = ({onLoggedIn}) => {
       }
     })
         .catch((e) => console.log(e));
-        navigate('/login');
+        <Navigate to="/login" />
   }; 
 
   // signup form with submit button
