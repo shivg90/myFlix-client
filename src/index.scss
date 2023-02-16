@@ -1,4 +1,17 @@
 $primary: Teal;
-$body-bg: white;
+$secondary: #75c8ae;
+$body-bg: snow;
 
 @import '~bootstrap/scss/bootstrap.scss';
+
+.form-body{
+    background-color: #75c8ae;
+}
+
+.navbar-custom {
+    background-color: teal;
+}
+
+.navbar-custom .navbar-brand {
+    color: white;
+}
