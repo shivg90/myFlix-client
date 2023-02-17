@@ -10,80 +10,22 @@ export const ProfileView = ({ user, movies }) => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
-    const [token] = useState("");
+    const [token] = localStorage.getItem("token");
 
    // const [favoriteMovies, setFavoriteMovies] = useState([]);
 
-// const storedToken = localStorage.getItem("token");
-//  const storedUser = localStorage.getItem("user");
-//  const [token] = useState(storedToken ? storedToken : null); 
+    // const storedToken = localStorage.getItem("token");
+    //  const storedUser = localStorage.getItem("user");
+    //  const [token] = useState(storedToken ? storedToken : null); 
 
     // apply filter to favorite movie list
     const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id));
 
-    // remove movie from fav
-    const removeFav = (id) => {
-      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`, 
-            "Content-Type": "application/json",
-          },
-        }  
-          ).then((response)=> response.json())
-          .then((data)=>{
-              if(data.newUser){
-                  localStorage.setItem('user', JSON.stringify(data.newUser));
-                  window.location.reload();
-              }else{
-                  alert('there was an issue removing the movie.')
-              }
-          }).catch((e)=>console.log(e));
-      }
 
-    // updates user info
-    const handleUpdate = (e) => {
-    
-        e.preventDefault(); 
-        
-        const data = {
-          Username: username,
-          Password: password,
-          Email: email,
-          Birthday: birthday
-        };
-
-        fetch(`https://movieapi-9rx2.onrender.com/users/${user.username}`, {
-            method: "PUT",
-            headers: {
-            Authorization : `Bearer ${token}`,
-            "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-    
-        }).then((response)=>response.json())
-        .then((data)=> { console.log(data);
-          if(data.ok){
-            alert('Update successful!');
-            setUpdatedUser(true);
-            window.location.reload();
-            localStorage.setItem("user", JSON.stringify(data.user));
-     
-          }else{
-              alert('Update failed!')
-          }
-      }).catch((e)=>{
-          alert("Something went wrong!");
-          console.log(e);
-      })
-  }
-
-  // then useEffect for when/if user decides to update their info
-
+    // useEffect for when user decides to update their info, returns updated info to user
     useEffect(() => {
       if(updatedUser){
-        fetch(`https://movieapi-9rx2.onrender.com/users/${user.username}`,{
+        fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`,{
               method: "GET",
               headers:{
                   Authorization: `Bearer ${token}`,
@@ -107,10 +49,73 @@ export const ProfileView = ({ user, movies }) => {
       }
   },[updatedUser])
 
-    // deletes user account
-    const handleDeregister = () => { //remove username from parenthesis
+
+    // updates user info
+    const handleUpdate = (e) => {
     
-        fetch(`https://movieapi-9rx2.onrender.com/users/${user.username}`, {
+      e.preventDefault(); 
+      
+      const data = {
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
+      };
+
+      fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
+          method: "PUT",
+          headers: {
+          Authorization : `Bearer ${token}`,
+          "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+  
+      }).then((response)=>response.json())
+      .then((data)=> { console.log(data);
+        if(data.ok){
+          alert('Update successful!');
+          setUpdatedUser(true);
+          window.location.reload();
+          localStorage.setItem("user", JSON.stringify(data.user));
+   
+        }else{
+            alert('Update failed!')
+        }
+    }).catch((e)=>{
+        alert("Something went wrong!");
+        console.log(e);
+    })
+}
+
+    // remove movie from fav
+    const removeFavoriteMovie = () => {
+      fetch(`https://movieapi-9rx2.onrender.com/users/:id}/favorites/${movieId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`, 
+            "Content-Type": "application/json",
+          },
+        }  
+          ).then((response)=> response.json())
+          .then((data) => {
+              if (data) { 
+                  setFavoriteMovies(favoriteMovies.filter((favM) => favM !== movie._id));
+                  localStorage.setItem('user', JSON.stringify(data.newUser));
+                  alert("Movie removed from favorites")
+                  window.location.reload();
+              }else{
+                  alert('There was an issue removing the movie.')
+              }
+          }).catch((e)=>console.log(e));
+      }
+
+    
+  
+    // deletes user account
+    const handleDeregister = () => { 
+    
+        fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -159,7 +164,7 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Control
                   type="text"
                   value={username}
-                  onChange={event => setUsername(event.target.value)} // onChange={event => handleUpdates(event)} ^ Form line: onSubmit={(event) => handleSubmit(event)}  
+                  onChange={event => setUsername(event.target.value)} 
                   minLength="5" 
                   placeholder="Enter username (min 5 characters)"
 
@@ -170,7 +175,7 @@ export const ProfileView = ({ user, movies }) => {
                 <Form.Label>New Password:</Form.Label>
                 <Form.Control
                   type="password"
-                  value=''
+                  value={password}
                   onChange={event => setPassword(event.target.value)}
                   placeholder="Password"
 
@@ -213,7 +218,7 @@ export const ProfileView = ({ user, movies }) => {
             </Col>
             <FavMovies 
               favMovies={favMovies}
-              removeFav={removeFav}
+              removeFavoriteMovie={removeFavoriteMovie}
             />
         </Row>
                 

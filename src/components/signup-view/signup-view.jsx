@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardGroup, Col, Container, Row, Button, Form} from "react-bootstrap";
 import { Navigate } from "react-router";
 
-export const SignupView = ({onLoggedIn}) => {
+export const SignupView = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");

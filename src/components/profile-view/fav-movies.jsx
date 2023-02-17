@@ -1,10 +1,13 @@
 import React from "react";
-import { Button, Link, Figure, Col, Row, Card } from "react-bootstrap";
-import { ProfileView } from "../profile-view/profile-view";
+import { Button, Col, Row, Card } from "react-bootstrap";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const FavMovies = ({ favMovies, removeFav }) => { 
+export const FavMovies = ({ favMovies, removeFavoriteMovie }) => { 
   
+   /*  const handleToggle = (movie) => {
+      toggleFavorite(movie);
+    }; */
+
 return (
   <Card>
     <Card.Body>
@@ -17,8 +20,10 @@ return (
               <Col xs={12} md={6} lg={3} key={movie._id} className="fav-movie">
                   <MovieCard 
                     key={movie._id}
-                    movie={movie} />
-                  <Button onClick = {()=>removeFav(movie._id)}> Remove </Button>
+                    movie={movie}
+                    // toggleFavorite={handleToggle} 
+                    />
+                  <Button onClick = {removeFavoriteMovie}> Remove </Button>
               </Col>
             ))}              
           </>

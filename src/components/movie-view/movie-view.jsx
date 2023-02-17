@@ -1,35 +1,59 @@
 import { Card, Container, Row, Col, Button} from 'react-bootstrap';
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { ProfileView } from '../profile-view/profile-view';
 import './movie-view.scss';
 
 export const MovieView = ({ movies }) => {
   const { movieId } = useParams();
-  const [favoriteMovies, setFavoriteMovies] = useState(user.FavoriteMovies);
+  //const [favoriteMovies, setFavoriteMovies] = useState(user.FavoriteMovies);
+  
+  // const [favoriteMovies, setFavoriteMovies] = useState(storedUser.FavoriteMovies ? storedUser.FavoriteMovies : []);
+
 
   const movie = movies.find((b) => b.id === movieId); 
 
   // trying to add favorite button and function
-  // refactor code to make an event click?
-  const addFav = (movie) => {
-    fetch(`https://movieapi-9rx2.onrender.com/users/${user.id}/favorites/${movie._id}`,
+  
+  const addFavoriteMovie = (movie) => {
+    fetch(`https://movieapi-9rx2.onrender.com/users/:id/favorites/${movieId}`,
             {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${token}`, 
+                // Authorization: `Bearer ${token}`, ?
                 "Content-Type": "application/json"
               },
-         
             }).then((response)=> response.json())
               .then((data)=> {
-                if (data.ok) {
                 console.log(data);
-                setFavoriteMovies([favoriteMovies]); // ?
-              } else {
-                  alert('there was an issue adding the movie.')
-              }
-              }) .catch((e)=>console.log(e));
+                setFavoriteMovies([...favoriteMovies, movie]);
+              }) 
+                .catch((e)=>console.log(e));
           };
+    
+    /* const toggleFavorite = (movie) => {
+      const index = favoriteMovies.indexOf(movie);
+        if (index > -1){
+          removeFavoriteMovie(movie);
+        } else {
+          addFavoriteMovie(movie);
+        }
+      };
+
+    const handleFavoriteClick = (e) => {
+      e.preventDefault();
+      toggleFavorite(movie); 
+    };
+
+    const favoriteButton = hasFavorite? "Remove from favorite" : "Add to favorite";
+
+
+    useEffect(() => {
+      const hasFavoriteMovies = movies.filter((movie) =>
+        favoriteMovies.includes(movie.id)
+      );
+        setFavoriteMovies([...hasFavoriteMovies]);
+      }, [movies, user]); */
  
 // movie view render
     return (
@@ -62,7 +86,7 @@ export const MovieView = ({ movies }) => {
                   <Button className="back-button" style={{ cursor: "pointer" }}>Back</Button>
                 </Link>
                 
-                <Button onClick= {()=>addFav(movie._id)} className="fav-button" variant="secondary" type="submit" style={{ cursor: "pointer" }} >Favorite</Button>
+                <Button onClick={addFavoriteMovie} className="fav-button" variant="secondary" type="submit" style={{ cursor: "pointer" }} > favorite</Button>
                 
                 </div>
                 </Card.Text>

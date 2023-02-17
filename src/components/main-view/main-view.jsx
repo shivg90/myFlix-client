@@ -68,7 +68,7 @@ export const MainView = () => {
             element={
               <>
                 { user ? (
-                  <Navigate to="/" /> // if no user 'Navigate' redirects to login page
+                  <Navigate to="/" /> // if user is validated redirects to homepage
                 ) : (
                   <Col md={5}>
                     <SignupView />
@@ -83,10 +83,10 @@ export const MainView = () => {
             element={
               <>
                 { user ? (
-                  <Navigate to="/" />
+                  <Navigate to="/" /> // if user is validated redirects to homepage
                 ) : (
                   <Col md={5}>
-                    <LoginView onLoggedIn={(user) => {setUser(user); setToken(token);}} /> 
+                    <LoginView onLoggedIn={(user, token) => {setUser(user); setToken(token);}} /> 
                   </Col>
                 )}
               </>
@@ -98,7 +98,7 @@ export const MainView = () => {
             element={
               <>
                 {!user ? (
-                  <Navigate to="/login" replace />
+                  <Navigate to="/login" replace /> // if user is not validated redirects to login page
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
                 ) : (
@@ -117,7 +117,13 @@ export const MainView = () => {
                   <Navigate to="/login" replace />
                 ) : (
                   <Col md={8}>
-                    <ProfileView user={user} movies={movies} />
+                    <ProfileView 
+                      user={user} 
+                      movies={movies} 
+                      favMovies={storedUser.FavoriteMovies} 
+                      onLoggedIn={(user, token) => { setUser(user); setToken(token) }}
+                      onLoggedOut={() => { setUser(null); setToken(null); localStorage.clear(); }}
+                    />
                   </Col>
                 )}
               </>
