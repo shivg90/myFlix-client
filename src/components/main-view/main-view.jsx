@@ -15,8 +15,10 @@ export const MainView = () => {
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [movies, setMovies] = useState([]); 
+  
+  
+  //const [loading, setLoading] = useState(false);
   
   // useEffect hook allows React to perform side effects in component e.g fetching data
   useEffect(() => {
@@ -24,14 +26,14 @@ export const MainView = () => {
       return;
     }
     // set loading before sending API request
-    setLoading(true);
+    //setLoading(true);
     fetch(`https://movieapi-9rx2.onrender.com/movies`, {
       headers: {Authorization: `Bearer ${token}`}
     })
       .then((response) => response.json())
       .then((data) => {
         // stops loading after response received
-        setLoading(false);
+        //setLoading(false);
         console.log('data', data);
         const moviesFromApi = data.map((movie) => {
           return {

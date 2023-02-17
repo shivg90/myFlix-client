@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FavMovies } from "../profile-view/fav-movies";
 import { UserInfo } from "./user-info";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 
 
 export const ProfileView = ({ user, movies }) => {
-    const [updatedUser, setUpdatedUser] = useState(false);
+    //const [updatedUser, setUpdatedUser] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -74,18 +74,16 @@ export const ProfileView = ({ user, movies }) => {
           body: JSON.stringify(data)
           
       }).then((response)=>response.json())
-      .then((data)=> { console.log(data);
-        
-          alert('Update successful!');
+      .then((data)=> { 
+        console.log(data);
           //setUpdatedUser(true);
-          window.location.reload();
-          localStorage.setItem("user", JSON.stringify(data.user));
-          console.log(user.Username);
-        
+        localStorage.setItem("user", JSON.stringify(data.user));
+        alert('Update successful!')
+        window.location.reload();
+       
     }).catch((e)=>{
         alert("Something went wrong!");
         console.log(e);
-        console.log(user.Username);
     })
 }
 
@@ -123,14 +121,14 @@ export const ProfileView = ({ user, movies }) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           }
-        }).then((response) => response.json())
-          .then((data) => {
-            if (data.ok){
+        }).then((response) => {
+           if (response.ok) {
+            localStorage.clear();
             alert("Account successfully deleted");
             <Navigate to="/signup" /> // replace window reload with navigate
-
-          } else {
-            alert("Deletion failed!");
+           }
+            else {
+            alert("Deletion failed!")
             window.location.reload();
           }
         }).catch((e)=>{

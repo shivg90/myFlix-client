@@ -7,7 +7,6 @@ import './movie-view.scss';
 export const MovieView = ({ movies }) => {
   const { movieId } = useParams();
   //const [favoriteMovies, setFavoriteMovies] = useState(user.FavoriteMovies);
-  
   // const [favoriteMovies, setFavoriteMovies] = useState(storedUser.FavoriteMovies ? storedUser.FavoriteMovies : []);
 
 
