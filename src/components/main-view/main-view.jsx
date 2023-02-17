@@ -11,13 +11,23 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 
 export const MainView = () => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  //const storedUser = localStorage.getItem("user");
+  //const storedUser = JSON.parse(localStorage.getItem("user")); // JSON is undefined now?
+  //const storedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+  
+  
+  const storedUser = null;
+  const storedstoredUser = localStorage.getItem("user");
+  if (storedstoredUser) {
+    try {
+      storedUser = JSON.parse(storedstoredUser);
+  } catch (e) {}
+}
+
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
   const [movies, setMovies] = useState([]); 
-  
-  
   //const [loading, setLoading] = useState(false);
   
   // useEffect hook allows React to perform side effects in component e.g fetching data
@@ -122,7 +132,7 @@ export const MainView = () => {
                     <ProfileView 
                       user={user} 
                       movies={movies} 
-                      favMovies={storedUser.FavoriteMovies} 
+                      //favMovies={storedUser.FavoriteMovies} 
                       onLoggedIn={(user, token) => { setUser(user); setToken(token) }}
                       onLoggedOut={() => { setUser(null); setToken(null); localStorage.clear(); }}
                     />
@@ -130,7 +140,8 @@ export const MainView = () => {
                 )}
               </>
             }
-          />
+          />  
+        
           <Route
             path="/"
             element={
@@ -157,7 +168,9 @@ export const MainView = () => {
   );
 };
                     
-                    
+            
+
+/*  /
                     
                 /* OLD CODE 2
                   // displays movie-view when movie is clicked
