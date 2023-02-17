@@ -10,7 +10,7 @@ export const ProfileView = ({ user, movies }) => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
-    const [token] = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
  
     //const [token] = useState(storedToken ? storedToken : null);
 
@@ -75,15 +75,13 @@ export const ProfileView = ({ user, movies }) => {
           
       }).then((response)=>response.json())
       .then((data)=> { console.log(data);
-        if(data.ok){
+        
           alert('Update successful!');
           //setUpdatedUser(true);
           window.location.reload();
           localStorage.setItem("user", JSON.stringify(data.user));
           console.log(user.Username);
-        }else{
-            alert('Update failed!')
-        }
+        
     }).catch((e)=>{
         alert("Something went wrong!");
         console.log(e);
