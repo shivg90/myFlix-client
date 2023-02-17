@@ -19,7 +19,7 @@ export const SignupView = () => {
       Password: password,
       Email: email,
       Birthday: birthday
-    };
+    }
 
     fetch(`https://movieapi-9rx2.onrender.com/users`, {
       method: "POST",
@@ -36,8 +36,8 @@ export const SignupView = () => {
         alert("Signup failed");
       }
     })
-        .catch((e) => console.log(e));
-        <Navigate to="/login" />
+      .catch((e) => console.log(e));
+      <Navigate to="/login" />
   }; 
 
   // signup form with submit button

@@ -49,7 +49,7 @@ export const ProfileView = ({ user, movies }) => {
   },[updatedUser])*/
 
 
-    // updates user info
+    // updates user info: WORKING but need to fill in every field
     const handleUpdate = (e) => {
     
       e.preventDefault(); 
@@ -87,7 +87,7 @@ export const ProfileView = ({ user, movies }) => {
 
     // remove movie from fav
     const removeFavoriteMovie = () => {
-      fetch(`https://movieapi-9rx2.onrender.com/users/:id}/favorites/${movieId}`,
+      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${movieId}`,
         {
           method: "DELETE",
           headers: {
@@ -106,11 +106,11 @@ export const ProfileView = ({ user, movies }) => {
                   alert('There was an issue removing the movie.')
               }
           }).catch((e)=>console.log(e));
-      }
+      };
 
     
   
-    // deletes user account
+    // deletes user account: WORKING
     const handleDeregister = () => { 
     
         fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
