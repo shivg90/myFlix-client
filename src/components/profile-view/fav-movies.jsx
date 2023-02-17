@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Col, Row, Card } from "react-bootstrap";
 import { MovieCard } from "../movie-card/movie-card";
+import './profile-view.scss'
 
 export const FavMovies = ({ favMovies, removeFavoriteMovie }) => { 
   
