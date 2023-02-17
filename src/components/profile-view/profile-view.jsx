@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FavMovies } from "../profile-view/fav-movies";
+import { MovieCard } from "../movie-card/movie-card";
 import { UserInfo } from "./user-info";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 
@@ -18,7 +18,7 @@ export const ProfileView = ({ user, movies }) => {
   // const [token] = useState(storedToken ? storedToken : null); 
 
     // apply filter to favorite movie list
-    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id));
+    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id));
 
 
     // useEffect for when user decides to update their info, returns updated info to user
@@ -87,7 +87,7 @@ export const ProfileView = ({ user, movies }) => {
 
     // remove movie from fav
     const removeFavoriteMovie = () => {
-      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${movieId}`,
+      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${movie.id}`,
         {
           method: "DELETE",
           headers: {
@@ -98,7 +98,7 @@ export const ProfileView = ({ user, movies }) => {
           ).then((response)=> response.json())
           .then((data) => {
               if (data) { 
-                  setFavoriteMovies(favoriteMovies.filter((favM) => favM !== movie._id));
+                  setFavoriteMovies(favoriteMovies.filter((favM) => favM !== movie.id));
                   localStorage.setItem('user', JSON.stringify(data.newUser));
                   alert("Movie removed from favorites")
                   window.location.reload();
@@ -211,13 +211,21 @@ export const ProfileView = ({ user, movies }) => {
       </Row>
       <>
         <Row>
-            <Col xs={12}>
-              <h4>Favorite Movies</h4>
-            </Col>
-            <FavMovies 
-              favMovies={favMovies}
-              removeFavoriteMovie={removeFavoriteMovie}
-            />
+          {favMovies.length === 0 ? ( 
+          <h4>You haven't added any movies! </h4>
+          ) : (
+          <>  
+            {favMovies.map((movie)=>(
+              <Col xs={12} md={6} lg={3} key={movie.id} className="fav-movie">
+                  <MovieCard 
+                    movie={movie}
+                    // toggleFavorite={handleToggle} 
+                    />
+                  <Button onClick = {removeFavoriteMovie}> Remove </Button>
+              </Col>
+            ))}              
+          </>
+          )}  
         </Row>
                 
       </>
