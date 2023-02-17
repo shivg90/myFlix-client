@@ -12,13 +12,10 @@ export const ProfileView = ({ user, movies }) => {
     const [birthday, setBirthday] = useState("");
     const token = localStorage.getItem("token");
  
-    //const [token] = useState(storedToken ? storedToken : null);
-
-   // const [favoriteMovies, setFavoriteMovies] = useState([]);
-
-    // const storedToken = localStorage.getItem("token");
-    
-    //  const [token] = useState(storedToken ? storedToken : null); 
+  // const [token] = useState(storedToken ? storedToken : null);
+  // const [favoriteMovies, setFavoriteMovies] = useState([]);
+  // const storedToken = localStorage.getItem("token");
+  // const [token] = useState(storedToken ? storedToken : null); 
 
     // apply filter to favorite movie list
     const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie._id));
@@ -67,25 +64,26 @@ export const ProfileView = ({ user, movies }) => {
       fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
           
           method: "PUT",
+          
           headers: {
           Authorization : `Bearer ${token}`,
           "Content-Type": "application/json"
           },
           body: JSON.stringify(data)
-          
-      }).then((response)=>response.json())
-      .then((data)=> { 
-        console.log(data);
+
+        }).then((response)=>response.json())
+          .then((data)=> { 
+          console.log(data);
           //setUpdatedUser(true);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        alert('Update successful!')
-        window.location.reload();
+          localStorage.setItem("user", JSON.stringify(data.user));
+          alert('Update successful!')
+          window.location.reload(); 
        
-    }).catch((e)=>{
+        }).catch((e)=>{
         alert("Something went wrong!");
         console.log(e);
-    })
-}
+        })
+    };
 
     // remove movie from fav
     const removeFavoriteMovie = () => {
