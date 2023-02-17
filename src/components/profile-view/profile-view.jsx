@@ -11,11 +11,13 @@ export const ProfileView = ({ user, movies }) => {
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
     const [token] = localStorage.getItem("token");
+ 
+    //const [token] = useState(storedToken ? storedToken : null);
 
    // const [favoriteMovies, setFavoriteMovies] = useState([]);
 
     // const storedToken = localStorage.getItem("token");
-    //  const storedUser = localStorage.getItem("user");
+    
     //  const [token] = useState(storedToken ? storedToken : null); 
 
     // apply filter to favorite movie list
@@ -23,9 +25,9 @@ export const ProfileView = ({ user, movies }) => {
 
 
     // useEffect for when user decides to update their info, returns updated info to user
-    useEffect(() => {
+    /*useEffect(() => {
       if(updatedUser){
-        fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`,{
+        fetch(`https://movieapi-9rx2.onrender.com/users/${storedUser.Username}`,{
               method: "GET",
               headers:{
                   Authorization: `Bearer ${token}`,
@@ -47,7 +49,7 @@ export const ProfileView = ({ user, movies }) => {
           console.log(e);
         });
       }
-  },[updatedUser])
+  },[updatedUser])*/
 
 
     // updates user info
@@ -63,27 +65,29 @@ export const ProfileView = ({ user, movies }) => {
       };
 
       fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
+          
           method: "PUT",
           headers: {
           Authorization : `Bearer ${token}`,
           "Content-Type": "application/json"
           },
           body: JSON.stringify(data)
-  
+          
       }).then((response)=>response.json())
       .then((data)=> { console.log(data);
         if(data.ok){
           alert('Update successful!');
-          setUpdatedUser(true);
+          //setUpdatedUser(true);
           window.location.reload();
           localStorage.setItem("user", JSON.stringify(data.user));
-   
+          console.log(user.Username);
         }else{
             alert('Update failed!')
         }
     }).catch((e)=>{
         alert("Something went wrong!");
         console.log(e);
+        console.log(user.Username);
     })
 }
 
