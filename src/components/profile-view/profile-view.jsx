@@ -127,7 +127,7 @@ export const ProfileView = ({ user, movies }) => {
         </Col>
 
         <Col xs={12} sm={8}>
-          <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
+          <Card style={{marginTop: 30, backgroundColor: "whitesmoke", marginBottom: 30}}>
           <Card.Body>
               <Card.Title>Update Information</Card.Title>
               <Form className="w-100" onSubmit={handleUpdate}> 
