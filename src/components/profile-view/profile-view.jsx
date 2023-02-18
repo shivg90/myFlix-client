@@ -11,6 +11,13 @@ export const ProfileView = ({ user, movies }) => {
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
     const token = localStorage.getItem("token");
+    const storedUser = null;
+    const storedstoredUser = localStorage.getItem("user");
+    if (storedstoredUser) {
+      try {
+        storedUser = JSON.parse(storedstoredUser);
+    } catch (e) {}
+    };
  
   // const [token] = useState(storedToken ? storedToken : null);
   // const [favoriteMovies, setFavoriteMovies] = useState([]);
@@ -20,36 +27,7 @@ export const ProfileView = ({ user, movies }) => {
     // apply filter to favorite movie list
     const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id));
 
-
-    // useEffect for when user decides to update their info, returns updated info to user
-    /*useEffect(() => {
-      if(updatedUser){
-        fetch(`https://movieapi-9rx2.onrender.com/users/${storedUser.Username}`,{
-              method: "GET",
-              headers:{
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'application/json',
-              },
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if(data){
-              setUsername(data.username);
-              setPassword(data.Password);
-              setEmail(data.Email);
-              setBirthday(data.Birthday);
-              setUpdatedUser(false);
-            }
-        })
-        .catch((e) => {
-          alert('Something went wrong!');
-          console.log(e);
-        });
-      }
-  },[updatedUser])*/
-
-
-    // updates user info: WORKING but need to fill in every field
+    // handle for updating user info
     const handleUpdate = (e) => {
     
       e.preventDefault(); 
@@ -66,7 +44,7 @@ export const ProfileView = ({ user, movies }) => {
           method: "PUT",
           
           headers: {
-          Authorization : `Bearer ${token}`,
+          Authorization : `Bearer ${localStorage.getItem('token')}`,
           "Content-Type": "application/json"
           },
           body: JSON.stringify(data)
@@ -86,31 +64,28 @@ export const ProfileView = ({ user, movies }) => {
     };
 
     // remove movie from fav
-    const removeFavoriteMovie = () => {
-      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${movie.id}`, //movie is undefined
+    const removeFavoriteMovie = (movie) => {
+      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/favorites`, 
         {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, 
             "Content-Type": "application/json",
           },
-        }  
-          ).then((response)=> response.json())
+        }).then((response)=> response.json())
           .then((data) => {
-              if (data) { 
-                  setFavoriteMovies(favoriteMovies.filter((favM) => favM !== movie.id));
-                  localStorage.setItem('user', JSON.stringify(data.newUser));
-                  alert("Movie removed from favorites")
-                  window.location.reload();
-              }else{
-                  alert('There was an issue removing the movie.')
-              }
-          }).catch((e)=>console.log(e));
+            console.log(data);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            alert("Movie removed!")
+            window.location.reload();
+          }) .catch((error)=>{
+            alert("Something went wrong!");
+            console.log(error);
+            console.log(storedstoredUser.Username);
+            })
       };
-
-    
   
-    // deletes user account: WORKING
+    // handle for deleting user account
     const handleDeregister = () => { 
     
         fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
@@ -219,7 +194,6 @@ export const ProfileView = ({ user, movies }) => {
               <Col xs={12} md={6} lg={3} key={movie.id} className="fav-movie">
                   <MovieCard 
                     movie={movie}
-                    // toggleFavorite={handleToggle} 
                     />
                   <Button onClick = {removeFavoriteMovie}> Remove </Button>
               </Col>

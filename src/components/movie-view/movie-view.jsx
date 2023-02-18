@@ -1,10 +1,9 @@
 import { Card, Container, Row, Col, Button} from 'react-bootstrap';
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { ProfileView } from '../profile-view/profile-view';
 import './movie-view.scss';
 
-export const MovieView = ({ movies }) => {
+export const MovieView = ({ user, movies }) => {
   const { movieId } = useParams();
   //const [favoriteMovies, setFavoriteMovies] = useState([]);
   const movie = movies.find((b) => b.id === movieId); 
@@ -15,23 +14,20 @@ export const MovieView = ({ movies }) => {
     try {
       storedUser = JSON.parse(storedstoredUser);
   } catch (e) {}
-}
+  } 
+  
 
   // trying to add favorite button and function
-
-    const addFavoriteMovie = () => {
+  const addFavoriteMovie = () => {
     
-      //e.preventDefault(); 
-
-      fetch(`https://movieapi-9rx2.onrender.com/users/:id/favorites/${movie.id}`, {
+      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/favorites`, {
           
           method: "POST",
-          
           headers: {
           Authorization : `Bearer ${token}`,
           "Content-Type": "application/json" 
           },
-          //body: JSON.stringify(data)
+         
 
         }).then((response)=>response.json())
           .then((data)=> { 
@@ -44,6 +40,7 @@ export const MovieView = ({ movies }) => {
         }) .catch((error)=>{
         alert("Something went wrong!");
         console.log(error);
+        console.log(storedstoredUser.Username);
         })
     }; 
   
