@@ -6,16 +6,49 @@ import './movie-view.scss';
 
 export const MovieView = ({ movies }) => {
   const { movieId } = useParams();
-  //const [favoriteMovies, setFavoriteMovies] = useState(user.FavoriteMovies);
-  // const [favoriteMovies, setFavoriteMovies] = useState(storedUser.FavoriteMovies ? storedUser.FavoriteMovies : []);
-
-
+  //const [favoriteMovies, setFavoriteMovies] = useState([]);
   const movie = movies.find((b) => b.id === movieId); 
+  const token = localStorage.getItem("token");
+  const storedUser = null;
+  const storedstoredUser = localStorage.getItem("user");
+  if (storedstoredUser) {
+    try {
+      storedUser = JSON.parse(storedstoredUser);
+  } catch (e) {}
+}
 
   // trying to add favorite button and function
+
+    const addFavoriteMovie = () => {
+    
+      //e.preventDefault(); 
+
+      fetch(`https://movieapi-9rx2.onrender.com/users/:id/favorites/${movie.id}`, {
+          
+          method: "POST",
+          
+          headers: {
+          Authorization : `Bearer ${token}`,
+          "Content-Type": "application/json" 
+          },
+          //body: JSON.stringify(data)
+
+        }).then((response)=>response.json())
+          .then((data)=> { 
+          console.log(data);
+          //setFavoriteMovies([...favoriteMovies, movie]);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          alert('Movie added!')
+          window.location.reload(); 
+       
+        }) .catch((error)=>{
+        alert("Something went wrong!");
+        console.log(error);
+        })
+    }; 
   
-  const addFavoriteMovie = (movie) => {
-    fetch(`https://movieapi-9rx2.onrender.com/users/:id/favorites/${movieId}`,
+  /*const addFavoriteMovie = (movie) => {
+    fetch(`https://movieapi-9rx2.onrender.com/users/:id/favorites/${movie.id}`, // need to define userId from API and movieId
             {
               method: "POST",
               headers: {
@@ -25,35 +58,11 @@ export const MovieView = ({ movies }) => {
             }).then((response)=> response.json())
               .then((data)=> {
                 console.log(data);
-                setFavoriteMovies([...favoriteMovies, movie]);
+                //setFavoriteMovies([favoriteMovies, movie]);
               }) 
                 .catch((e)=>console.log(e));
-          };
+          }; */
     
-    /* const toggleFavorite = (movie) => {
-      const index = favoriteMovies.indexOf(movie);
-        if (index > -1){
-          removeFavoriteMovie(movie);
-        } else {
-          addFavoriteMovie(movie);
-        }
-      };
-
-    const handleFavoriteClick = (e) => {
-      e.preventDefault();
-      toggleFavorite(movie); 
-    };
-
-    const favoriteButton = hasFavorite? "Remove from favorite" : "Add to favorite";
-
-
-    useEffect(() => {
-      const hasFavoriteMovies = movies.filter((movie) =>
-        favoriteMovies.includes(movie.id)
-      );
-        setFavoriteMovies([...hasFavoriteMovies]);
-      }, [movies, user]); */
- 
 // movie view render
     return (
       <Container > 

@@ -87,7 +87,7 @@ export const ProfileView = ({ user, movies }) => {
 
     // remove movie from fav
     const removeFavoriteMovie = () => {
-      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${movie.id}`,
+      fetch(`https://movieapi-9rx2.onrender.com/users/${user._id}/favorites/${movie.id}`, //movie is undefined
         {
           method: "DELETE",
           headers: {
