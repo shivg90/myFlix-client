@@ -112,17 +112,14 @@ export const ProfileView = ({ user, movies }) => {
       })
     };
 
-// returns 1. rendered userinfo component, 2. update form, 3. rendered favorites from fav-movies component
+// returns 1. rendered userinfo component, 2. update form, 3. rendered favorites list
   return (
     <Container >
       <Row>
         <Col xs={12} sm={4}>
           <Card style={{marginTop: 30}}>
             <Card.Body>
-              <Card.Title>My Information</Card.Title>
-              <Card.Text>
               <UserInfo username={user.Username} email={user.Email} handleDeregister={handleDeregister} /> 
-              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -190,7 +187,8 @@ export const ProfileView = ({ user, movies }) => {
           <h4>You haven't added any movies! </h4>
           ) : (
           <>  
-            {favMovies.map((movie)=>(
+            <h4>Favorite Movies</h4>
+            {favMovies.map((movie)=>( 
               <Col xs={12} md={6} lg={3} key={movie.id} className="fav-movie">
                   <MovieCard 
                     movie={movie}
