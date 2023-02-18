@@ -48,9 +48,9 @@ export const SignupView = () => {
       <Row>
         <Col>
           <CardGroup>
-            <Card style={{marginTop: 50, backgroundColor: "whitesmoke"}}>
+            <Card style={{marginTop: 70, backgroundColor: "whitesmoke"}}>
             <Card.Body>
-              <Card.Title>User Registration</Card.Title>
+              <Card.Title>Create an account</Card.Title>
               <Form onSubmit={handleSubmit}>  
               <Form.Group controlId="signUpFormUsername">
                 <Form.Label>Username:</Form.Label>
@@ -60,7 +60,7 @@ export const SignupView = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   minLength="5" 
-                  placeholder="Enter username (min 5 characters)"
+                  placeholder="username"
 
                 />
               </Form.Group>
@@ -72,7 +72,7 @@ export const SignupView = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="Password"
+                  placeholder="password"
                 />
               </Form.Group>
 
@@ -83,7 +83,7 @@ export const SignupView = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="Enter email"
+                  placeholder="email"
                 />
               </Form.Group>
 
