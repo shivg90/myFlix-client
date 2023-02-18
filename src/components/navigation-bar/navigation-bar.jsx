@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const NavigationBar = ({ user, onLoggedOut }) => {
   return (
       <Navbar expand="lg" className="navbar-custom" >
-      <Container fluid>
+      <Container>
         <Navbar.Brand class="navbar-brand" as={Link} to="/"> MyFlix Movie App </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -23,9 +23,11 @@ export const NavigationBar = ({ user, onLoggedOut }) => {
               </>
             )}
           </Nav>
+        
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+      </Navbar>
+    
   );
 };
 

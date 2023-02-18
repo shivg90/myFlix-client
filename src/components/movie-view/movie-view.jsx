@@ -65,7 +65,7 @@ export const MovieView = ({ user, movies }) => {
       <Container > 
         <Row> 
           <Col md={12}> 
-            <Card style={{marginTop: 30}}>
+            <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
               <Card.Img variant="top" src={movie.image} className="w-100" />
               <Card.Body >
                 <Card.Title>{movie.title}</Card.Title>

@@ -6,7 +6,8 @@ import './movie-card.scss';
 
 export const MovieCard = ({ movie }) => {
   return (
-    <Card className="h-100" style={{marginTop: 20}}>
+    <Card className="h-100" style={{marginTop: 20, backgroundColor: "whitesmoke"}}>
+      <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
       <Card.Img className="card-image" variant="top" src={movie.image} />
       <Card.Body>
         <Card.Title>{movie.title}</Card.Title>
@@ -15,6 +16,7 @@ export const MovieCard = ({ movie }) => {
           <Button variant="link" className="open-button" style={{ cursor: "pointer" }}>See more</Button>
         </Link>
       </Card.Body>
+      </Link>
     </Card>
   );
 };

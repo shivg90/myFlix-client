@@ -2,6 +2,8 @@ import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { UserInfo } from "./user-info";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
+import './profile-view.scss';
+
 
 
 export const ProfileView = ({ user, movies }) => {
@@ -117,7 +119,7 @@ export const ProfileView = ({ user, movies }) => {
     <Container >
       <Row>
         <Col xs={12} sm={4}>
-          <Card style={{marginTop: 30}}>
+          <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
             <Card.Body>
               <UserInfo username={user.Username} email={user.Email} handleDeregister={handleDeregister} /> 
             </Card.Body>
@@ -125,7 +127,7 @@ export const ProfileView = ({ user, movies }) => {
         </Col>
 
         <Col xs={12} sm={8}>
-          <Card style={{marginTop: 30}}>
+          <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
           <Card.Body>
               <Card.Title>Update Information</Card.Title>
               <Form className="w-100" onSubmit={handleUpdate}> 
@@ -193,7 +195,7 @@ export const ProfileView = ({ user, movies }) => {
                   <MovieCard 
                     movie={movie}
                     />
-                  <Button onClick = {removeFavoriteMovie}> Remove </Button>
+                  <Button variant="secondary" size="sm" className="remove-fav-button" onClick = {removeFavoriteMovie}> Remove </Button>
               </Col>
             ))}              
           </>
