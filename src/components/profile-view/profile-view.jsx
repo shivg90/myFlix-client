@@ -20,11 +20,6 @@ export const ProfileView = ({ user, movies }) => {
         storedUser = JSON.parse(storedstoredUser);
     } catch (e) {}
     };
- 
-  // const [token] = useState(storedToken ? storedToken : null);
-  // const [favoriteMovies, setFavoriteMovies] = useState([]);
-  // const storedToken = localStorage.getItem("token");
-  // const [token] = useState(storedToken ? storedToken : null); 
 
     // apply filter to favorite movie list
     const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id));
@@ -54,7 +49,6 @@ export const ProfileView = ({ user, movies }) => {
         }).then((response)=>response.json())
           .then((data)=> { 
           console.log(data);
-          //setUpdatedUser(true);
           localStorage.setItem("user", JSON.stringify(data.user));
           alert('Update successful!')
           window.location.reload(); 

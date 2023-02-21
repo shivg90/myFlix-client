@@ -5,37 +5,39 @@ import './movie-view.scss';
 
 export const MovieView = ({ user, movies }) => {
   const { movieId } = useParams();
-  //const [favoriteMovies, setFavoriteMovies] = useState([]);
   const movie = movies.find((b) => b.id === movieId); 
   const token = localStorage.getItem("token");
+  //const [favoriteMovies, setFavoriteMovies] = useState(user.FavoriteMovies);
+  //const [user, setUser] = useState(storedUser? storedUser : null);
   const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
   if (storedstoredUser) {
     try {
       storedUser = JSON.parse(storedstoredUser);
   } catch (e) {}
-  } 
+  }   
   
 
   // trying to add favorite button and function
   const addFavoriteMovie = () => {
+  
     
       fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/favorites`, {
           
           method: "POST",
           headers: {
           Authorization : `Bearer ${token}`,
-          "Content-Type": "application/json" 
+          "Content-Type": "application/json"  
           },
          
-
         }).then((response)=>response.json())
           .then((data)=> { 
-          console.log(data);
-          //setFavoriteMovies([...favoriteMovies, movie]);
+          console.log(user); 
+          console.log(data);  
+          //setFavoriteMovies(favoriteMovies);
           localStorage.setItem("user", JSON.stringify(data.user));
           alert('Movie added!')
-          window.location.reload(); 
+          
        
         }) .catch((error)=>{
         alert("Something went wrong!");
@@ -43,22 +45,6 @@ export const MovieView = ({ user, movies }) => {
         console.log(storedstoredUser.Username);
         })
     }; 
-  
-  /*const addFavoriteMovie = (movie) => {
-    fetch(`https://movieapi-9rx2.onrender.com/users/:id/favorites/${movie.id}`, // need to define userId from API and movieId
-            {
-              method: "POST",
-              headers: {
-                // Authorization: `Bearer ${token}`, ?
-                "Content-Type": "application/json"
-              },
-            }).then((response)=> response.json())
-              .then((data)=> {
-                console.log(data);
-                //setFavoriteMovies([favoriteMovies, movie]);
-              }) 
-                .catch((e)=>console.log(e));
-          }; */
     
 // movie view render
     return (
