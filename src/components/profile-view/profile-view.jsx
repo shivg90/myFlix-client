@@ -72,8 +72,7 @@ export const ProfileView = ({ user, movies }) => {
           .then((data) => {
             console.log(data);
             localStorage.setItem("user", JSON.stringify(data.user));
-            alert("Movie removed!")
-            window.location.reload();
+            alert("Movie removed!");
           }) .catch((error)=>{
             alert("Something went wrong!");
             console.log(error);

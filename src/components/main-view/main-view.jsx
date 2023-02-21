@@ -28,9 +28,9 @@ export const MainView = () => {
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
-  const [movies, setMovies] = useState([]); 
+  const [movies, setMovies] = useState([]); // existing state for move data
   const [filteredMovies, setFilteredMovies] = useState([]);
-  const [movieTitle, setMovieTitle] = useState(""); 
+  const [movieTitle, setMovieTitle] = useState(""); // new state for search results
   //const [loading, setLoading] = useState(false); // add loading state back in
 
   // useEffect hook allows React to perform side effects in component e.g fetching data
@@ -73,14 +73,16 @@ export const MainView = () => {
     setMovieTitle([filteredMovies]);
   }, [movies]); */
  
-    
 
   // attempt at event handler for search function
   // when clicking submit "the list is empty" is returned
   const handleSearch = () => {
     const newData = movies.filter(x => x.movieTitle == movieTitle); 
     setMovies(newData); 
-  }
+    console.log(movieTitle);
+  };
+
+  
 
    // 'if' statements are replaced by ternary operators '?:' - if true, if false, and combined into one peice of code wrapped in Row
 
