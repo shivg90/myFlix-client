@@ -87,29 +87,5 @@ export const LoginView = ({ onLoggedIn }) => {
     </Container>
     );
   };
-    // handleSubmit is the callback of onSubmit, tells the login API to validate user and password
-    /* old code 
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          minLength="5"
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <button type="submit">Submit</button>
-    </form>
-  );
-}; */
+    
+    

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { UserInfo } from "./user-info";
+import { useParams } from "react-router";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 import './profile-view.scss';
 
@@ -8,6 +9,7 @@ import './profile-view.scss';
 
 export const ProfileView = ({ user, movies }) => {
     //const [updatedUser, setUpdatedUser] = useState(false);
+    const { movieId } = useParams();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -60,7 +62,7 @@ export const ProfileView = ({ user, movies }) => {
     };
 
     // remove movie from fav
-    const removeFavoriteMovie = (movie) => {
+    const removeFavoriteMovie = () => {
       fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/favorites`, 
         {
           method: "DELETE",
@@ -68,10 +70,12 @@ export const ProfileView = ({ user, movies }) => {
             Authorization: `Bearer ${localStorage.getItem('token')}`, 
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({movieId})
         }).then((response)=> response.json())
           .then((data) => {
-            console.log(data);
-            localStorage.setItem("user", JSON.stringify(data.user));
+            console.log('data', data);
+            console.log('user', user);
+            localStorage.setItem("user", JSON.stringify(user));
             alert("Movie removed!");
           }) .catch((error)=>{
             alert("Something went wrong!");

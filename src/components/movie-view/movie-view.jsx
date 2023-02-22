@@ -1,13 +1,16 @@
+import { response } from 'express';
+//import { useState } from "react";
+
 import { Card, Container, Row, Col, Button} from 'react-bootstrap';
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import './movie-view.scss';
 
-export const MovieView = ({ user, movies }) => {
+export const MovieView = ({ user, movies}) => {
   const { movieId } = useParams();
   const movie = movies.find((b) => b.id === movieId); 
   const token = localStorage.getItem("token");
-  //const [favoriteMovies, setFavoriteMovies] = useState(user.FavoriteMovies);
+  
   //const [user, setUser] = useState(storedUser? storedUser : null);
   const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
@@ -16,7 +19,6 @@ export const MovieView = ({ user, movies }) => {
       storedUser = JSON.parse(storedstoredUser);
   } catch (e) {}
   }   
-  
 
   // trying to add favorite button and function
   const addFavoriteMovie = () => {
@@ -29,13 +31,15 @@ export const MovieView = ({ user, movies }) => {
           Authorization : `Bearer ${token}`,
           "Content-Type": "application/json"  
           },
+          body: JSON.stringify({movieId})
          
         }).then((response)=>response.json())
-          .then((data)=> { 
-          console.log(user); 
-          console.log(data);  
-          //setFavoriteMovies(favoriteMovies);
-          localStorage.setItem("user", JSON.stringify(data.user));
+          .then((data)=> {
+          
+          console.log('user', user); 
+          console.log('data', data);  
+
+          localStorage.setItem("user", JSON.stringify(user));
           alert('Movie added!')
           
        

@@ -10,13 +10,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { title } from "process";
 
 export const MainView = () => {
   //const storedUser = localStorage.getItem("user");
   //const storedUser = JSON.parse(localStorage.getItem("user")); // JSON is undefined now?
-  //const storedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
   
+  // code workaround as JSON was returnimng undefined
   const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
   if (storedstoredUser) {
@@ -28,9 +27,9 @@ export const MainView = () => {
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
-  const [movies, setMovies] = useState([]); // existing state for move data
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [movieTitle, setMovieTitle] = useState(""); // new state for search results
+  const [movies, setMovies] = useState([]); // existing state for movie data
+  const [searchInput, setSearchInput] = useState(""); //create state for search input
+  const [filteredResults, setFilteredResults] = useState([]); // create state to store search results
   //const [loading, setLoading] = useState(false); // add loading state back in
 
   // useEffect hook allows React to perform side effects in component e.g fetching data
@@ -64,26 +63,24 @@ export const MainView = () => {
         });
 
         setMovies(moviesFromApi);
-        setFilteredMovies(moviesFromApi);
       })
   }, [token]) 
 
-  /*useEffect(() => {
-    const filteredMovies = movies.filter((movie) => movieTitle.includes(movie.id));
-    setMovieTitle([filteredMovies]);
-  }, [movies]); */
- 
+  // create function to handle the search, onChange (input field UI) should take searchMovies
+    const searchMovies = () => { //searchValue
+    setSearchInput(movieTitle) //searchValue
+    if (searchInput !== '') { // checks if search input is empty
+        const filteredData = movies.filter((movie) => ( //movies = datafromAPI
+          Object.values(movie).join('').toLowerCase().includes(searchInput.toLowerCase())
+      ))
 
-  // attempt at event handler for search function
-  // when clicking submit "the list is empty" is returned
-  const handleSearch = () => {
-    const newData = movies.filter(x => x.movieTitle == movieTitle); 
-    setMovies(newData); 
-    console.log(movieTitle);
+        setFilteredResults(filteredData) //setFilteredResults state is assigned to filteredData
+    }
+    else{
+        setFilteredResults(movies);
+    }
   };
-
   
-
    // 'if' statements are replaced by ternary operators '?:' - if true, if false, and combined into one peice of code wrapped in Row
 
   return (
@@ -139,7 +136,7 @@ export const MainView = () => {
                   <Col>The list is empty!</Col>
                 ) : (
                   <Col md={8}>
-                    <MovieView movies={movies} username={user.Username} favoriteMovies={user.FavoriteMovies}/>
+                    <MovieView movies={movies} user={user} username={user.Username} favoriteMovies={user.FavoriteMovies}/>
                   </Col>
                 )}
               </>
@@ -178,8 +175,8 @@ export const MainView = () => {
               <Row>
                 <Col className="search-bar" md={4} style={{marginTop: 40, marginBottom: 30, justifyContent:"center"}}>
                   <label>Search</label>
-                    <input type="text" icon="search" placeholder="search movie title" onChange={(e)=> setMovieTitle(e.target.value)}></input>
-                    <Button onClick={()=> handleSearch()}>Search</Button>
+                  <input type="text" icon="search" placeholder="search movie title" onChange={(e)=> searchMovies(e.target.value)}></input>
+                  <Button type="submit">Search</Button>
                 </Col>
               </Row>
 
@@ -190,14 +187,22 @@ export const MainView = () => {
                   </Col>
                 ))}
               <>
-                {filteredMovies && filteredMovies.length >0 ? 
-                 filteredMovies.map((movie) => (
-                <Col className="mb-4" key={movie._id} md={3}>
-                  <MovieCard movie={movie} />
-                </Col>
+                 {searchInput.length !== 0 ? (
+                 filteredResults.map((movie) => (
+                  <Col className="mb-4" key={movie._id} md={3}>
+                    <MovieCard movie={movie} />
+                  </Col>
                 ))
-                : 'no movies'
-              }
+                ) : (
+                <>
+                  {movies.map((movie) => (
+                    <Col className="mb-4" key={movie._id} md={3}>
+                    <MovieCard movie={movie} />
+                    </Col>
+                ))}
+                </> 
+              )}
+                
               </>
               </>
               </>
