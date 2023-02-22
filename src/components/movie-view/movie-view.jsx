@@ -1,4 +1,5 @@
-import { response } from 'express';
+//import { response } from 'express';
+import { useEffect } from 'react';
 //import { useState } from "react";
 
 import { Card, Container, Row, Col, Button} from 'react-bootstrap';
@@ -11,7 +12,7 @@ export const MovieView = ({ user, movies}) => {
   const movie = movies.find((b) => b.id === movieId); 
   const token = localStorage.getItem("token");
   
-  //const [user, setUser] = useState(storedUser? storedUser : null);
+  //code workaround for storedUser error
   const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
   if (storedstoredUser) {

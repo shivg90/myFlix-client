@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { title } from "process";
 
 export const MainView = () => {
   //const storedUser = localStorage.getItem("user");
