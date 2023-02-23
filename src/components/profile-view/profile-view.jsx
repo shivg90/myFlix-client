@@ -5,16 +5,16 @@ import { useParams } from "react-router";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 import './profile-view.scss';
 
-
-
 export const ProfileView = ({ user, movies }) => {
-    //const [updatedUser, setUpdatedUser] = useState(false);
     const { movieId } = useParams();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
     const token = localStorage.getItem("token");
+    const movie = movies.find((b) => b.id === movieId); 
+
+    // code workaround for storedUser error
     const storedUser = null;
     const storedstoredUser = localStorage.getItem("user");
     if (storedstoredUser) {
@@ -23,7 +23,7 @@ export const ProfileView = ({ user, movies }) => {
     } catch (e) {}
     };
 
-    // apply filter to favorite movie list
+    // apply filter to display favorite movie list
     const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id));
 
     // handle for updating user info
@@ -61,9 +61,9 @@ export const ProfileView = ({ user, movies }) => {
         })
     };
 
-    // remove movie from fav
+    // remove movie from favorites
     const removeFavoriteMovie = () => {
-      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/favorites`, 
+      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/movies/${movie.id}`, 
         {
           method: "DELETE",
           headers: {

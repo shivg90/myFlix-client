@@ -25,13 +25,13 @@ export const MovieView = ({ user, movies}) => {
   const addFavoriteMovie = () => {
   
     
-      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/favorites`, {
+      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/movies/${movie.id}`, {
           
           method: "POST",
           headers: {
           Authorization : `Bearer ${token}`,
           "Content-Type": "application/json"  
-          },
+          },  
           body: JSON.stringify({movieId})
          
         }).then((response)=>response.json())
