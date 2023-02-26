@@ -20,9 +20,11 @@ export const MovieView = ({ user, movies}) => {
       storedUser = JSON.parse(storedstoredUser);
   } catch (e) {}
   }   
+  console.log ("this is the user passed from the profile view", user);
+  console.log ("stored username", storedstoredUser.Username);
 
   // trying to add favorite button and function
-  const addFavoriteMovie = () => {
+  /*const addFavoriteMovie = () => {
   
     
       fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/movies/${movie.id}`, {
@@ -49,7 +51,7 @@ export const MovieView = ({ user, movies}) => {
         console.log(error);
         console.log(storedstoredUser.Username);
         })
-    }; 
+    }; */
     
 // movie view render
     return (
@@ -81,8 +83,6 @@ export const MovieView = ({ user, movies}) => {
                 <Link to={`/`}>
                   <Button className="back-button" style={{ cursor: "pointer" }}>Back</Button>
                 </Link>
-                
-                <Button onClick={addFavoriteMovie} className="fav-button" variant="secondary" type="submit" style={{ cursor: "pointer" }} > favorite</Button>
                 
                 </div>
                 </Card.Text>

@@ -13,18 +13,19 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { title } from "process";
 
 export const MainView = () => {
-  //const storedUser = localStorage.getItem("user");
-  //const storedUser = JSON.parse(localStorage.getItem("user")); // JSON is undefined now?
+ // const storedUser = localStorage.getItem("user");
+
+  //const storedToken = localStorage.getItem('token');
   
   // code workaround as JSON was returnimng undefined
-  const storedUser = null;
+  /* const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
   if (storedstoredUser) {
     try {
       storedUser = JSON.parse(storedstoredUser);
   } catch (e) {}
-  };
-
+  }; */
+  const storedUser = JSON.parse(localStorage.getItem("user")); // JSON is undefined now?
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
@@ -83,7 +84,7 @@ export const MainView = () => {
   };
   
    // 'if' statements are replaced by ternary operators '?:' - if true, if false, and combined into one peice of code wrapped in Row
-
+  console.log("test", user)
   return (
     <BrowserRouter>
     <NavigationBar
@@ -154,8 +155,8 @@ export const MainView = () => {
                     <ProfileView 
                       user={user} 
                       movies={movies}  
-                      onLoggedIn={(user, token) => { setUser(user); setToken(token) }}
-                      onLoggedOut={() => { setUser(null); setToken(null); localStorage.clear(); }}
+                      //onLoggedIn={(user, token) => { setUser(user); setToken(token) }}
+                      //onLoggedOut={() => { setUser(null); setToken(null); localStorage.clear(); }}
                     />
                   </Col>
                 )}
@@ -184,21 +185,21 @@ export const MainView = () => {
               <>
                 {movies.map((movie) => (
                   <Col className="mb-4" key={movie._id} md={3}>
-                    <MovieCard movie={movie} />
+                    <MovieCard movie={movie}  />
                   </Col>
                 ))}
               <>
                  {searchInput.length !== 0 ? (
                  filteredResults.map((movie) => (
                   <Col className="mb-4" key={movie._id} md={3}>
-                    <MovieCard movie={movie} />
+                    <MovieCard movie={movie}   />
                   </Col>
                 ))
                 ) : (
                 <>
                   {movies.map((movie) => (
                     <Col className="mb-4" key={movie._id} md={3}>
-                    <MovieCard movie={movie} />
+                    <MovieCard movie={movie}  />
                     </Col>
                 ))}
                 </> 
@@ -216,6 +217,3 @@ export const MainView = () => {
     </BrowserRouter>
   );
 };
-                    
-            
-

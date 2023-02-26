@@ -5,26 +5,25 @@ import { useParams } from "react-router";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 import './profile-view.scss';
 
-export const ProfileView = ({ user, movies }) => {
+
+
+export const ProfileView = ({ movies }) => {
+    //const [updatedUser, setUpdatedUser] = useState(false);
     const { movieId } = useParams();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
     const token = localStorage.getItem("token");
-    const movie = movies.find((b) => b.id === movieId); 
+    //const storedUser = null;
+    const storedUser = JSON.parse(localStorage.getItem("user"))
+    console.log ("user profile view", storedUser);
 
-    // code workaround for storedUser error
-    const storedUser = null;
-    const storedstoredUser = localStorage.getItem("user");
-    if (storedstoredUser) {
-      try {
-        storedUser = JSON.parse(storedstoredUser);
-    } catch (e) {}
-    };
 
-    // apply filter to display favorite movie list
-    const favMovies = movies.filter((movie) => user.FavoriteMovies.includes(movie.id));
+    // apply filter to favorite movie list
+    const favMovies = movies.filter((movie) => storedUser.FavoriteMovies.includes(movie.id));
+    console.log ("movies profile view", favMovies);
+
 
     // handle for updating user info
     const handleUpdate = (e) => {
@@ -61,28 +60,7 @@ export const ProfileView = ({ user, movies }) => {
         })
     };
 
-    // remove movie from favorites
-    const removeFavoriteMovie = () => {
-      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/movies/${movie.id}`, 
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`, 
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({movieId})
-        }).then((response)=> response.json())
-          .then((data) => {
-            console.log('data', data);
-            console.log('user', user);
-            localStorage.setItem("user", JSON.stringify(user));
-            alert("Movie removed!");
-          }) .catch((error)=>{
-            alert("Something went wrong!");
-            console.log(error);
-            console.log(storedstoredUser.Username);
-            })
-      };
+    
   
     // handle for deleting user account
     const handleDeregister = () => { 
@@ -118,7 +96,7 @@ export const ProfileView = ({ user, movies }) => {
         <Col xs={12} sm={4}>
           <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
             <Card.Body>
-              <UserInfo username={user.Username} email={user.Email} handleDeregister={handleDeregister} /> 
+              <UserInfo username={storedUser.Username} email={storedUser.Email} handleDeregister={handleDeregister} /> 
             </Card.Body>
           </Card>
         </Col>
@@ -190,9 +168,8 @@ export const ProfileView = ({ user, movies }) => {
             {favMovies.map((movie)=>( 
               <Col xs={12} md={6} lg={3} key={movie.id} className="fav-movie">
                   <MovieCard 
-                    movie={movie}
+                    movie = {movie}
                     />
-                  <Button variant="secondary" size="sm" className="remove-fav-button" onClick = {removeFavoriteMovie}> Remove </Button>
               </Col>
             ))}              
           </>
@@ -203,9 +180,3 @@ export const ProfileView = ({ user, movies }) => {
   </Container>
   );
 };
-
-
-
-
- 
-
