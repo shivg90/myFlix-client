@@ -37,7 +37,9 @@ export const ProfileView = ({ movies }) => {
         Birthday: birthday
       };
 
-      fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
+      console.log(data);
+
+      fetch(`https://movieapi-9rx2.onrender.com/users/${storedUser.Username}`, {
           
           method: "PUT",
           
@@ -51,21 +53,21 @@ export const ProfileView = ({ movies }) => {
           .then((data)=> { 
           console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
-          alert('Update successful!')
-          window.location.reload(); 
-       
+          alert("Update successful");
+          window.location.reload();
+          
         }).catch((e)=>{
         alert("Something went wrong!");
         console.log(e);
         })
-    };
+    }; 
 
     
   
     // handle for deleting user account
     const handleDeregister = () => { 
     
-        fetch(`https://movieapi-9rx2.onrender.com/users/${user.Username}`, {
+        fetch(`https://movieapi-9rx2.onrender.com/users/${storedUser.Username}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,

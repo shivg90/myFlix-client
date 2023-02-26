@@ -18,14 +18,14 @@ export const MainView = () => {
   //const storedToken = localStorage.getItem('token');
   
   // code workaround as JSON was returnimng undefined
-  /* const storedUser = null;
+  const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
   if (storedstoredUser) {
     try {
       storedUser = JSON.parse(storedstoredUser);
   } catch (e) {}
-  }; */
-  const storedUser = JSON.parse(localStorage.getItem("user")); // JSON is undefined now?
+  }; 
+  //const storedUser = JSON.parse(localStorage.getItem("user")); // JSON is undefined now?
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
