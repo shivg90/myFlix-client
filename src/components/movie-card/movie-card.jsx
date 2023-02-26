@@ -10,7 +10,7 @@ export const MovieCard = ({movie }) => {
   
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
-  //console.log("user", user);
+  console.log("user", user);
 
 
   //check if the movie is already in the favorite list of the user
@@ -49,7 +49,7 @@ export const MovieCard = ({movie }) => {
         //console.log ("data", data);
         //console.log("user post favorite clic", user);
         localStorage.setItem('user', JSON.stringify(data));
-        window.location.reload(false);
+        //window.location.reload(false);
       })
       .catch((e) => {
         alert('Something went wrong');
