@@ -17,7 +17,7 @@ export const MainView = () => {
 
   //const storedToken = localStorage.getItem('token');
   
-  // code workaround as JSON was returnimng undefined
+  // code workaround as JSON was returning undefined
   const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
   if (storedstoredUser) {

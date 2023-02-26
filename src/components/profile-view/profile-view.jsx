@@ -53,7 +53,8 @@ export const ProfileView = ({ movies }) => {
           .then((data)=> { 
           console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
-          alert("Update successful");
+          alert("Update successful, please log in again!");
+          localStorage.clear();
           window.location.reload();
           
         }).catch((e)=>{
@@ -61,7 +62,6 @@ export const ProfileView = ({ movies }) => {
         console.log(e);
         })
     }; 
-
     
   
     // handle for deleting user account
