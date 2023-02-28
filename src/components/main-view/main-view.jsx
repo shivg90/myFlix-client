@@ -5,7 +5,6 @@ import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { ProfileView } from "../profile-view/profile-view";
-//import { SearchBar } from "./search-bar"; // use if moving rendered search results to diff file
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
@@ -30,36 +29,20 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
   const [movies, setMovies] = useState([]); // existing state for all movie data
-  const [filteredMovieList, setFilteredMovieList] = useState([]); // create state to show filtered movie data
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredMovies, setFilteredMovies] = useState(movies);
   
-  // create search bar function
-  function movieSearch(searchString) {
-    console.log("search string", searchString)
-    setFilteredMovieList(
-        movies.filter((movie) => 
-          //console.log("title", movie.Title);
-          movie.Title && movie.Title.toLowerCase().includes(searchString))
-        );
-  }
-
-  // hook for search bar function
-  useEffect(() => {
-    console.log(storedToken, token)
-        if (!token) return;
-    
-    fetch(`https://movieapi-9rx2.onrender.com/movies`, {
-      
-      headers: { Authorization: `Bearer ${token}` }
-        })  
-        .then((response) => response.json())
-        .then((data) => { 
-          console.log("data", data);
-            setFilteredMovieList(data);
-            
-        })
-    }, [token])
+  // create search bar handle
+    const handleSearch = (event) => {
+      const searchQuery = event.target.value.toLowerCase();
+      setSearchTerm(searchQuery);
   
-
+      const filtered = movies.filter((movie) =>
+        movie.title.toLowerCase().includes(searchQuery)
+      );
+  
+      setFilteredMovies(filtered);
+    };
   
   // useEffect hook allows React to perform side effects in component e.g fetching data
   useEffect(() => {
@@ -90,10 +73,8 @@ export const MainView = () => {
           release: movie.Release
           }
         });
-
-       
-
         setMovies(moviesFromApi);
+        setFilteredMovies(moviesFromApi);
       })
   }, [token]) 
 
@@ -109,7 +90,7 @@ export const MainView = () => {
           setToken(null);
           localStorage.clear();
         }}
-        onSearch={movieSearch}
+        
       />
       
       <Row className="justify-content-md-center">
@@ -184,26 +165,21 @@ export const MainView = () => {
                 <>
                 {!user ? (
                     <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
+                ) : filteredMovies.length === 0 ? (
                     <Col>The list is empty!</Col>
                 ) : (
                 <>
-                  {movies.map((movie) => (
+                <Row>
+                <Col className="d-flex justify-content-center" style={{marginTop: 90, marginBottom: 20}}>
+                  <input type="text" class="form-control form-control-lg" placeholder="search movies" value={searchTerm} onChange={handleSearch}></input>
+                </Col>
+                </Row>
+                  {filteredMovies.map((movie) => (
                     <Col className="mb-4" key={movie._id} md={3}>
                       <MovieCard movie={movie}  />
                     </Col>
                   ))}
-                
-                <>
-                  {filteredMovieList.map((movie, movieId) => (
-                    <Col className="mb-4" md={3}>
-                      <MovieCard movie={movie} key={movieId} />
-                    </Col>
-                    ))}
-                  
                 </>
-                </>
-                
                 )}
                 </>  
             }
