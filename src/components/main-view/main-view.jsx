@@ -11,12 +11,12 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { title } from "process";
+import { useLocation } from 'react-router-dom';
 
 export const MainView = () => {
  // const storedUser = localStorage.getItem("user");
-
   //const storedToken = localStorage.getItem('token');
-  
+
   // code workaround as JSON was returning undefined
   const storedUser = null;
   const storedstoredUser = localStorage.getItem("user");
@@ -29,11 +29,38 @@ export const MainView = () => {
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
-  const [movies, setMovies] = useState([]); // existing state for movie data
-  const [searchInput, setSearchInput] = useState(""); //create state for search input
-  const [filteredResults, setFilteredResults] = useState([]); // create state to store search results
-  //const [loading, setLoading] = useState(false); // add loading state back in
+  const [movies, setMovies] = useState([]); // existing state for all movie data
+  const [filteredMovieList, setFilteredMovieList] = useState([]); // create state to show filtered movie data
+  
+  // create search bar function
+  function movieSearch(searchString) {
+    console.log("search string", searchString)
+    setFilteredMovieList(
+        movies.filter((movie) => 
+          //console.log("title", movie.Title);
+          movie.Title && movie.Title.toLowerCase().includes(searchString))
+        );
+  }
 
+  // hook for search bar function
+  useEffect(() => {
+    console.log(storedToken, token)
+        if (!token) return;
+    
+    fetch(`https://movieapi-9rx2.onrender.com/movies`, {
+      
+      headers: { Authorization: `Bearer ${token}` }
+        })  
+        .then((response) => response.json())
+        .then((data) => { 
+          console.log("data", data);
+            setFilteredMovieList(data);
+            
+        })
+    }, [token])
+  
+
+  
   // useEffect hook allows React to perform side effects in component e.g fetching data
   useEffect(() => {
     if (!token) {
@@ -64,24 +91,12 @@ export const MainView = () => {
           }
         });
 
+       
+
         setMovies(moviesFromApi);
       })
   }, [token]) 
 
-  // create function to handle the search, onChange (input field UI) should take searchMovies
-    const searchMovies = () => { //searchValue
-    setSearchInput(movieTitle) //searchValue
-    if (searchInput !== '') { // checks if search input is empty
-        const filteredData = movies.filter((movie) => ( //movies = datafromAPI
-          Object.values(movie).join('').toLowerCase().includes(searchInput.toLowerCase())
-      ))
-
-        setFilteredResults(filteredData) //setFilteredResults state is assigned to filteredData
-    }
-    else{
-        setFilteredResults(movies);
-    }
-  };
   
    // 'if' statements are replaced by ternary operators '?:' - if true, if false, and combined into one peice of code wrapped in Row
   console.log("test", user)
@@ -94,6 +109,7 @@ export const MainView = () => {
           setToken(null);
           localStorage.clear();
         }}
+        onSearch={movieSearch}
       />
       
       <Row className="justify-content-md-center">
@@ -155,8 +171,6 @@ export const MainView = () => {
                     <ProfileView 
                       user={user} 
                       movies={movies}  
-                      //onLoggedIn={(user, token) => { setUser(user); setToken(token) }}
-                      //onLoggedOut={() => { setUser(null); setToken(null); localStorage.clear(); }}
                     />
                   </Col>
                 )}
@@ -167,51 +181,33 @@ export const MainView = () => {
           <Route
             path="/"
             element={
-              <>
+                <>
                 {!user ? (
-                  <Navigate to="/login" replace />
+                    <Navigate to="/login" replace />
                 ) : movies.length === 0 ? (
-                  <Col>The list is empty!</Col>
-                ) : (
-              <>
-              <Row>
-                <Col className="search-bar" md={4} style={{marginTop: 40, marginBottom: 30, justifyContent:"center"}}>
-                  <label>Search</label>
-                  <input type="text" icon="search" placeholder="search movie title" onChange={(e)=> searchMovies(e.target.value)}></input>
-                  <Button type="submit">Search</Button>
-                </Col>
-              </Row>
-
-              <>
-                {movies.map((movie) => (
-                  <Col className="mb-4" key={movie._id} md={3}>
-                    <MovieCard movie={movie}  />
-                  </Col>
-                ))}
-              <>
-                 {searchInput.length !== 0 ? (
-                 filteredResults.map((movie) => (
-                  <Col className="mb-4" key={movie._id} md={3}>
-                    <MovieCard movie={movie}   />
-                  </Col>
-                ))
+                    <Col>The list is empty!</Col>
                 ) : (
                 <>
                   {movies.map((movie) => (
                     <Col className="mb-4" key={movie._id} md={3}>
-                    <MovieCard movie={movie}  />
+                      <MovieCard movie={movie}  />
                     </Col>
-                ))}
-                </> 
-              )}
+                  ))}
                 
-              </>
-              </>
-              </>
-            )}
-              </>
-            } 
-          />   
+                <>
+                  {filteredMovieList.map((movie, movieId) => (
+                    <Col className="mb-4" md={3}>
+                      <MovieCard movie={movie} key={movieId} />
+                    </Col>
+                    ))}
+                  
+                </>
+                </>
+                
+                )}
+                </>  
+            }
+          />
         </Routes>
       </Row>
     </BrowserRouter>

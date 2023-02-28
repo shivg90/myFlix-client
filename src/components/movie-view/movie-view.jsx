@@ -1,5 +1,4 @@
 //import { response } from 'express';
-import { useEffect } from 'react';
 //import { useState } from "react";
 
 import { Card, Container, Row, Col, Button} from 'react-bootstrap';
@@ -23,36 +22,6 @@ export const MovieView = ({ user, movies}) => {
   console.log ("this is the user passed from the profile view", user);
   console.log ("stored username", storedstoredUser.Username);
 
-  // trying to add favorite button and function
-  /*const addFavoriteMovie = () => {
-  
-    
-      fetch(`https://movieapi-9rx2.onrender.com/users/${storedstoredUser.Username}/movies/${movie.id}`, {
-          
-          method: "POST",
-          headers: {
-          Authorization : `Bearer ${token}`,
-          "Content-Type": "application/json"  
-          },  
-          body: JSON.stringify({movieId})
-         
-        }).then((response)=>response.json())
-          .then((data)=> {
-          
-          console.log('user', user); 
-          console.log('data', data);  
-
-          localStorage.setItem("user", JSON.stringify(user));
-          alert('Movie added!')
-          
-       
-        }) .catch((error)=>{
-        alert("Something went wrong!");
-        console.log(error);
-        console.log(storedstoredUser.Username);
-        })
-    }; */
-    
 // movie view render
     return (
       <Container > 
