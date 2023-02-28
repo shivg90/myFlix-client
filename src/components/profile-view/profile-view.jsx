@@ -109,7 +109,7 @@ export const ProfileView = ({ movies }) => {
               <Card.Title>Update Information</Card.Title>
               <Form className="w-100" onSubmit={handleUpdate}> 
               <Form.Group controlId="updateFormUsername">
-                <Form.Label>New Username:</Form.Label>
+                <Form.Label>Username:</Form.Label>
                 <Form.Control
                   type="text"
                   value={username}
@@ -121,7 +121,7 @@ export const ProfileView = ({ movies }) => {
               </Form.Group>
 
               <Form.Group controlId="updatePassword">
-                <Form.Label>New Password:</Form.Label>
+                <Form.Label style={{ marginTop: 10 }} >Password:</Form.Label>
                 <Form.Control
                   type="password"
                   value={password}
@@ -132,7 +132,7 @@ export const ProfileView = ({ movies }) => {
               </Form.Group>
 
               <Form.Group controlId="updateFormEmail">
-                <Form.Label>New Email:</Form.Label>
+                <Form.Label style={{ marginTop: 10 }} >Email:</Form.Label>
                 <Form.Control
                   type="email"
                   value={email}
@@ -142,7 +142,7 @@ export const ProfileView = ({ movies }) => {
               </Form.Group>
 
               <Form.Group controlId="updateFormBirthday">
-                <Form.Label>New Birthday:</Form.Label>
+                <Form.Label style={{ marginTop: 10 }} >Birthday: </Form.Label>
                 <Form.Control
                   type="date"
                   value={birthday}

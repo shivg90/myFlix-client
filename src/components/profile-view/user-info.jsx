@@ -8,8 +8,8 @@ export const UserInfo = ({email, username, handleDeregister}) =>{
     <h4>My Information</h4>
     <p>Name: {username}</p>
     <p>e-mail: {email}</p>
-        <Link to="/login">
-        <Button variant = "danger" type ="submit" size="sm" onClick={handleDeregister}> Delete Account </Button> 
+        <Link to="/signup">
+        <Button variant="link" style={{ color: "red", marginLeft: 50 }} onClick={handleDeregister}> Delete account </Button> 
         </Link>
     </>
     );

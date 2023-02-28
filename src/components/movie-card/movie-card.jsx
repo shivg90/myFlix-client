@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+//import { FaHeart } from "react-icons/fa";
 import './movie-card.scss';
 
 
@@ -51,8 +52,8 @@ export const MovieCard = ({ movie }) => {
       .then((response) => response.json())
       .then((data) => {
         //setFavorite = (!alreadyFavorite);
-        //console.log ("data", data);
-        //console.log("user post favorite clic", user);
+        console.log ("data", data);
+        console.log("user post favorite clic", user);
         localStorage.setItem('user', JSON.stringify(data)); // sets new movie data to the user's local storage
         //window.location.reload(false);
       })
@@ -75,8 +76,8 @@ export const MovieCard = ({ movie }) => {
           <Button variant="link" className="open-button" style={{ cursor: "pointer" }}>See more</Button>
         </Link>
           {favorite ? (
-          <Button variant="danger" size="sm" className="remove-fav-button"  onClick={() => toggleFavorite()}> Remove from favorites</Button>) : (
-          <Button variant="success" size="sm" className="remove-fav-button" onClick={() => toggleFavorite()}> Add to favorites</Button>)
+          <Button variant="danger" size="sm" className="remove-fav-button"  onClick={() => toggleFavorite()}> Remove favorite</Button>) : (
+          <Button variant="success" size="sm" className="remove-fav-button" onClick={() => toggleFavorite()}> Add favorite</Button>)
           }
       </Card.Body>
       </Link>
