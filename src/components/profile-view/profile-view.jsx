@@ -15,15 +15,14 @@ export const ProfileView = ({ movies }) => {
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
     const token = localStorage.getItem("token");
+    const [showForm, setShowForm] = useState(false);
     //const storedUser = null;
     const storedUser = JSON.parse(localStorage.getItem("user"))
     console.log ("user profile view", storedUser);
 
-
     // apply filter to favorite movie list
     const favMovies = movies.filter((movie) => storedUser.FavoriteMovies.includes(movie.id));
     console.log ("movies profile view", favMovies);
-
 
     // handle for updating user info
     const handleUpdate = (e) => {
@@ -63,6 +62,9 @@ export const ProfileView = ({ movies }) => {
         })
     }; 
     
+    const handleToggleForm = () => {
+      setShowForm(!showForm);
+    };
   
     // handle for deleting user account
     const handleDeregister = () => { 
@@ -94,7 +96,7 @@ export const ProfileView = ({ movies }) => {
 // returns 1. rendered userinfo component, 2. update form, 3. rendered favorites list
   return (
     <Container >
-      <Row>
+      <Row style={{marginTop: 60}}>
         <Col xs={12} sm={4}>
           <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
             <Card.Body>
@@ -104,6 +106,11 @@ export const ProfileView = ({ movies }) => {
         </Col>
 
         <Col xs={12} sm={8}>
+        
+        <Button variant="link" style={{textDecoration: "none"}} onClick={handleToggleForm}>{showForm ? "close" : "edit info"} </Button>
+        
+        {showForm && (
+
           <Card style={{marginTop: 30, backgroundColor: "whitesmoke", marginBottom: 30}}>
           <Card.Body>
               <Card.Title>Update Information</Card.Title>
@@ -157,11 +164,12 @@ export const ProfileView = ({ movies }) => {
 
             </Card.Body>
           </Card>
+          )}
         </Col>
 
       </Row>
       <>
-        <Row>
+        <Row style={{marginTop: 100}}>
           {favMovies.length === 0 ? ( 
           <h4>You haven't added any movies! </h4>
           ) : (
