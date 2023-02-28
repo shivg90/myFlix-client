@@ -48,7 +48,7 @@ export const SignupView = () => {
       <Row>
         <Col>
           <CardGroup>
-            <Card style={{marginTop: 70, backgroundColor: "whitesmoke"}}>
+            <Card style={{marginTop: 100, backgroundColor: "whitesmoke"}}>
             <Card.Body>
               <Card.Title>Create an account</Card.Title>
               <Form onSubmit={handleSubmit}>  
