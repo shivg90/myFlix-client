@@ -7,10 +7,9 @@ import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { ProfileView } from "../profile-view/profile-view";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { title } from "process";
-import { useLocation } from 'react-router-dom';
+
 
 export const MainView = () => {
  // const storedUser = localStorage.getItem("user");
@@ -74,7 +73,7 @@ export const MainView = () => {
           }
         });
         setMovies(moviesFromApi);
-        setFilteredMovies(moviesFromApi);
+        setFilteredMovies(moviesFromApi); //second state, using same fetched data
       })
   }, [token]) 
 
@@ -117,7 +116,8 @@ export const MainView = () => {
                 { user ? (
                   <Navigate to="/" /> // if user is validated redirects to homepage
                 ) : (
-                  <Col md={5}>
+                  <Col md={5} >
+                    
                     <LoginView onLoggedIn={(user, token) => {setUser(user); setToken(token);}} /> 
                   </Col>
                 )}
