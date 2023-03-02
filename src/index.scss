@@ -1,4 +1,15 @@
 $primary: Teal;
+
 $body-bg: white;
 
 @import '~bootstrap/scss/bootstrap.scss';
+
+.navbar-custom {
+    background-color: teal;
+    width: 100%;
+}
+
+.navbar-custom .navbar-brand {
+    color: white;
+}
+

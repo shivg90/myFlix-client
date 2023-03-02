@@ -3,18 +3,45 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view"; 
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
+import { NavigationBar } from "../navigation-bar/navigation-bar";
+import { ProfileView } from "../profile-view/profile-view";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { title } from "process";
+
 
 export const MainView = () => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+ // const storedUser = localStorage.getItem("user");
+  //const storedToken = localStorage.getItem('token');
+
+  // code workaround as JSON was returning undefined
+  const storedUser = null;
+  const storedstoredUser = localStorage.getItem("user");
+  if (storedstoredUser) {
+    try {
+      storedUser = JSON.parse(storedstoredUser);
+  } catch (e) {}
+  }; 
+  //const storedUser = JSON.parse(localStorage.getItem("user")); // JSON is undefined now?
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
-  const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [movies, setMovies] = useState([]); // existing state for all movie data
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredMovies, setFilteredMovies] = useState(movies);
+  
+  // create search bar handle
+    const handleSearch = (event) => {
+      const searchQuery = event.target.value.toLowerCase();
+      setSearchTerm(searchQuery);
+  
+      const filtered = movies.filter((movie) =>
+        movie.title.toLowerCase().includes(searchQuery)
+      );
+  
+      setFilteredMovies(filtered);
+    };
   
   // useEffect hook allows React to perform side effects in component e.g fetching data
   useEffect(() => {
@@ -22,16 +49,18 @@ export const MainView = () => {
       return;
     }
     // set loading before sending API request
-    setLoading(true);
-    fetch("https://movieapi-9rx2.onrender.com/movies", {
+    //setLoading(true);
+    fetch(`https://movieapi-9rx2.onrender.com/movies`, {
       headers: {Authorization: `Bearer ${token}`}
     })
       .then((response) => response.json())
       .then((data) => {
         // stops loading after response received
-        setLoading(false);
+        //setLoading(false);
         console.log('data', data);
+
         const moviesFromApi = data.map((movie) => {
+
           return {
           // value names match to API database
           id: movie._id,
@@ -44,125 +73,119 @@ export const MainView = () => {
           }
         });
         setMovies(moviesFromApi);
+        setFilteredMovies(moviesFromApi); //second state, using same fetched data
       })
-  }, [token])
+  }, [token]) 
 
+  
    // 'if' statements are replaced by ternary operators '?:' - if true, if false, and combined into one peice of code wrapped in Row
+  console.log("test", user)
   return (
-    <Row className="justify-content-md-center">
-      {!user ? (
-        // user must first login or signup
-        <>
-          <Col md={5}>
-          <LoginView onLoggedIn={(user, token) => {setUser(user); setToken(token)}} /> 
-          
-          <SignupView />
-          </Col>
-        </>
-        // displays movie-view when movie is clicked
-      ) : selectedMovie ? (
-        <Col md={8} style={{ border: "1px solid black" }}>
-        <MovieView 
-          movie={selectedMovie} 
-          onBackClick={() => setSelectedMovie(null)} 
-        />
-        <Button variant="secondary" size="sm" onClick={() => {setUser(null); setToken(null); localStorage.clear(); }}>Logout</Button>
-        </Col>
-        // displays text message if list of movies is empty
-      ) : movies.length === 0 ? (
-        <p>The list is empty!</p>
+    <BrowserRouter>
+    <NavigationBar
+        user={user}
+        onLoggedOut={() => {
+          setUser(null);
+          setToken(null);
+          localStorage.clear();
+        }}
         
-      ) : loading ? (
-        // displays movie-card with logout button, if user does not select a movie
-            <p>Loading...</p>
-          ) : !movies || !movies.length ? (
-            <p>No movies found</p>
-          ) : (
-            <>
-          {movies.map((movie) => (
-            <Col key={movie._id} md={3}>
-            <MovieCard
-              movie={movie}
-              onMovieClick={(newSelectedMovie) => {
-                setSelectedMovie(newSelectedMovie);
-              }}
-            />
-            </Col>
-          ))}
-          <Button md="1" variant="secondary" size="sm" onClick={() => {setUser(null);}}>Logout</Button>
-        </>
-      )}
-    </Row>
-    );
-  };
-
-
+      />
       
-  /* OLD CODE
-  // user must first either login or signup
-  if (!user) {
-    return (
-      <>
-        <LoginView onLoggedIn={(user, token) => {
-          setUser(user);
-          setToken(token);
-        }} />
-        or
-        <SignupView />
-      </>
-    )
-  }
+      <Row className="justify-content-md-center">
+        <Routes>
+          <Route
+            path="/signup"
+            element={
+              <>
+                { user ? (
+                  <Navigate to="/" /> // if user is validated redirects to homepage
+                ) : (
+                  <Col md={5}>
+                    <SignupView />
+                  </Col>
+                )}
+              </>
 
-  // displays movie-view when movie is selected (clicked)
-  if (selectedMovie) {
-    return (
-      <>
-      <button onClick={() => { setUser(null); setToken(null); localStorage.clear();
-      }}
-      > Logout 
-      </button>
-      <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
-      </>
-    );
-  }
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <>
+                { user ? (
+                  <Navigate to="/" /> // if user is validated redirects to homepage
+                ) : (
+                  <Col md={5} >
+                    
+                    <LoginView onLoggedIn={(user, token) => {setUser(user); setToken(token);}} /> 
+                  </Col>
+                )}
+              </>
 
-  // displays text message if list of movies is empty
-  if (movies.length === 0) {
-    return (
-      <>
-      <button onClick={() => { setUser(null); setToken(null); localStorage.clear();
-      }}
-      > Logout
-      </button>
-      <div>The list is empty!</div>
-    </>
-    );
-  }
-
-  // displays movie-card with logout button, if user does not select a movie 
-  return (
-    // conditional rendering for loading statment
-    loading ? (
-      <p>Loading...</p>
-    ) : !movies || !movies.length ? (
-      <p>No movies found</p>
-    ) : (
-    <div>
-      <button onClick={() => { setUser(null); setToken(null); localStorage.clear();
-      }}
-    > Logout
-    </button>
-    
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie._id}
-          movie={movie}
-          onMovieClick={(newSelectedMovie) => {
-            setSelectedMovie(newSelectedMovie);
-          }}
-        />
-      ))}
-    </div>
-  ));
-} */
-
+            }
+          />
+          <Route
+            path="/movies/:movieId" 
+            element={
+              <>
+                {!user ? (
+                  <Navigate to="/login" replace /> // if user is not validated redirects to login page
+                ) : movies.length === 0 ? (
+                  <Col>The list is empty!</Col>
+                ) : (
+                  <Col md={8}>
+                    <MovieView movies={movies} user={user} username={user.Username} favoriteMovies={user.FavoriteMovies}/>
+                  </Col>
+                )}
+              </>
+            }
+          />
+          <Route
+            path="/users" //"/profile"
+            element={
+              <>
+                {!user ? (
+                  <Navigate to="/login" replace />
+                ) : (
+                  <Col md={8}>
+                    <ProfileView 
+                      user={user} 
+                      movies={movies}  
+                    />
+                  </Col>
+                )}
+              </>
+            }
+          />  
+        
+          <Route
+            path="/"
+            element={
+                <>
+                {!user ? (
+                    <Navigate to="/login" replace />
+                ) : filteredMovies.length === 0 ? (
+                    <Col>The list is empty!</Col>
+                ) : (
+                <>
+                <Row>
+                <Col className="d-flex justify-content-center" style={{marginTop: 90, marginBottom: 20}}>
+                  <input type="text" class="form-control form-control-lg" placeholder="search movies" value={searchTerm} onChange={handleSearch}></input>
+                </Col>
+                </Row>
+                  {filteredMovies.map((movie) => (
+                    <Col className="mb-4" key={movie._id} md={3}>
+                      <MovieCard movie={movie}  />
+                    </Col>
+                  ))}
+                </>
+                )}
+                </>  
+            }
+          />
+        </Routes>
+      </Row>
+    </BrowserRouter>
+  );
+};
