@@ -23,16 +23,17 @@ export const MovieView = ({ user, movies}) => {
   console.log ("stored username", storedstoredUser.Username);
 
 // movie view render
-    return (
-      <Container > 
-        <Row> 
-          <Col md={12}> 
-            <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
-              <Card.Img variant="top" src={movie.image} className="w-100" />
-              <Card.Body >
-                <Card.Title>{movie.title}</Card.Title>
-                <Card.Text>
-                <div>
+
+return (
+  <Container > 
+    <Row> 
+      <Col md={12}> 
+        <Card >
+          <Card.Img variant="top" src={movie.image} className="w-100" />
+          <Card.Body >
+            <Card.Title>{movie.title}</Card.Title>
+            <Card.Text>
+              <div>
                 <div>
                   <span>Description: </span>
                   <span>{movie.description}</span>
@@ -47,19 +48,19 @@ export const MovieView = ({ user, movies}) => {
                 </div>
                 <div>
                   <span>Release: </span>
-                  <span>{movie.release}</span>
+                  <span>{new Date(movie.release).toISOString().slice(0,10).replace(/-/g,"/")}</span>
                 </div>
                 <Link to={`/`}>
-                  <Button className="back-button" style={{ cursor: "pointer" }}>Back</Button>
+                  <Button className="back-button" variant="secondary" style={{ cursor: "pointer" }}>Back</Button>
                 </Link>
                 
-                </div>
-                </Card.Text>
-              </Card.Body> 
-            </Card>
-          </Col>
-        </Row> 
-      </Container> 
-    );
-  };
+              </div>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      </Col> 
+    </Row> 
+  </Container> 
+  );
+};
  

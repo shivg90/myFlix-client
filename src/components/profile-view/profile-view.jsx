@@ -95,28 +95,34 @@ export const ProfileView = ({ movies }) => {
 
 // returns 1. rendered userinfo component, 2. update form, 3. rendered favorites list
   return (
-    <Container >
-      <Row style={{marginTop: 60}}>
-        <Col xs={12} sm={4}>
+    <Container>
+      <Row className="mb-4" style={{marginTop: 60}}>
+        <Col xs={12} sm={8} md={6} lg={6}>
           <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
             <Card.Body>
               <UserInfo username={storedUser.Username} email={storedUser.Email} handleDeregister={handleDeregister} /> 
+              
             </Card.Body>
           </Card>
         </Col>
+      </Row>
 
-        <Col xs={12} sm={8}>
-        
-        <Button variant="link" style={{textDecoration: "none"}} onClick={handleToggleForm}>{showForm ? "close" : "edit info"} </Button>
-        
+      <Row>
+        <Col>
+          <Button variant="secondary" size="sm" onClick={handleToggleForm}>{showForm ? "close" : "edit info"} </Button>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
         {showForm && (
 
           <Card style={{marginTop: 30, backgroundColor: "whitesmoke", marginBottom: 30}}>
           <Card.Body>
-              <Card.Title>Update Information</Card.Title>
+            <Card.Title>Update Information</Card.Title>
               <Form className="w-100" onSubmit={handleUpdate}> 
               <Form.Group controlId="updateFormUsername">
-                <Form.Label>Username:</Form.Label>
+                <Form.Label style={{ marginTop: 10 }}>Username:</Form.Label>
                 <Form.Control
                   type="text"
                   value={username}
@@ -128,7 +134,7 @@ export const ProfileView = ({ movies }) => {
               </Form.Group>
 
               <Form.Group controlId="updatePassword">
-                <Form.Label style={{ marginTop: 10 }} >Password:</Form.Label>
+                <Form.Label style={{ marginTop: 15 }} >Password:</Form.Label>
                 <Form.Control
                   type="password"
                   value={password}
@@ -139,7 +145,7 @@ export const ProfileView = ({ movies }) => {
               </Form.Group>
 
               <Form.Group controlId="updateFormEmail">
-                <Form.Label style={{ marginTop: 10 }} >Email:</Form.Label>
+                <Form.Label style={{ marginTop: 15 }} >Email:</Form.Label>
                 <Form.Control
                   type="email"
                   value={email}
@@ -149,7 +155,7 @@ export const ProfileView = ({ movies }) => {
               </Form.Group>
 
               <Form.Group controlId="updateFormBirthday">
-                <Form.Label style={{ marginTop: 10 }} >Birthday: </Form.Label>
+                <Form.Label style={{ marginTop: 15 }} >Birthday: </Form.Label>
                 <Form.Control
                   type="date"
                   value={birthday}
@@ -157,7 +163,7 @@ export const ProfileView = ({ movies }) => {
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" style={{ margin: '0.7rem'}} onClick={handleUpdate}>
+              <Button variant="secondary" type="submit" style={{marginTop: 20}} onClick={handleUpdate}>
                 Save Changes
               </Button>
               </Form>
@@ -165,27 +171,31 @@ export const ProfileView = ({ movies }) => {
             </Card.Body>
           </Card>
           )}
-        </Col>
 
+
+        </Col>
       </Row>
+
+
+        
+      
       <>
-        <Row style={{marginTop: 100}}>
-          {favMovies.length === 0 ? ( 
-          <h4>You haven't added any movies! </h4>
-          ) : (
-          <>  
-            <h4>Favorite Movies</h4>
-            {favMovies.map((movie)=>( 
-              <Col xs={12} md={6} lg={3} key={movie.id} className="fav-movie">
-                  <MovieCard 
-                    movie = {movie}
-                    />
-              </Col>
-            ))}              
-          </>
-          )}  
-        </Row>
-                
+      <Row style={{marginTop: 100}}>
+        {favMovies.length === 0 ? ( 
+        <h4>You haven't added any movies! </h4>
+        ) : (
+        <>  
+        <h4>Favorite Movies</h4>
+        {favMovies.map((movie)=>( 
+          <Col xs={12} md={6} lg={4} key={movie.id} className="mb-4" >
+            <MovieCard 
+              movie = {movie}
+            />
+          </Col>
+        ))}              
+        </>
+      )}  
+      </Row>
       </>
   </Container>
   );

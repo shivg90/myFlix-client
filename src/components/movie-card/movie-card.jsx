@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, ButtonGroup, Col} from "react-bootstrap";
 import { Link } from "react-router-dom";
 //import { FaHeart } from "react-icons/fa";
 import './movie-card.scss';
@@ -69,22 +69,20 @@ export const MovieCard = ({ movie }) => {
     <Card className="h-100" style={{marginTop: 20, backgroundColor: "whitesmoke"}}>
       <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
       <Card.Img className="card-image" variant="top" src={movie.image} />
-      <Card.Body>
+      <Card.Body >
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text className="card-text">{movie.description}</Card.Text>
-        <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-          <Button variant="link" className="open-button" style={{ cursor: "pointer" }}>See more</Button>
-        </Link>
+        <ButtonGroup className="d-flex justify-content-center align-items-center" style={{marginLeft: 50, marginRight: 40}}>
           {favorite ? (
-          <Button variant="danger" size="sm" className="remove-fav-button"  onClick={() => toggleFavorite()}> Remove favorite</Button>) : (
-          <Button variant="success" size="sm" className="remove-fav-button" onClick={() => toggleFavorite()}> Add favorite</Button>)
+          <Button variant="danger" size="sm" className="fav-button" onClick={() => toggleFavorite()}> Remove favorite</Button>) : (
+          <Button variant="success" size="sm" className="fav-button" onClick={() => toggleFavorite()}> Add favorite</Button>)
           }
+        </ButtonGroup>
       </Card.Body>
       </Link>
     </Card>
   );
 };
-
 
   // validation of data types between prop and component
   MovieCard.propTypes = {
