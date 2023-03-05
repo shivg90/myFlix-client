@@ -1,8 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Card, ButtonGroup, Col} from "react-bootstrap";
-import { Link } from "react-router-dom";
-//import { FaHeart } from "react-icons/fa";
+import { Button, Card, ButtonGroup} from "react-bootstrap";
+import { Link, Navigate} from "react-router-dom";
 import './movie-card.scss';
 
 
@@ -22,6 +21,7 @@ export const MovieCard = ({ movie }) => {
   
   //console.log(favorite);
   const toggleFavorite = () => {
+  
     // if token is undefined/empty, the return statement stops the execution of the function
     if (!token) return;
 
@@ -53,9 +53,10 @@ export const MovieCard = ({ movie }) => {
       .then((data) => {
         //setFavorite = (!alreadyFavorite);
         console.log ("data", data);
-        console.log("user post favorite clic", user);
+        console.log("user post favorite click", user);
         localStorage.setItem('user', JSON.stringify(data)); // sets new movie data to the user's local storage
-        //window.location.reload(false);
+        //window.location.reload(false); // logs user out
+        
       })
       .catch((e) => {
         alert('Something went wrong');
@@ -73,10 +74,13 @@ export const MovieCard = ({ movie }) => {
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text className="card-text">{movie.description}</Card.Text>
         <ButtonGroup className="d-flex justify-content-center align-items-center" style={{marginLeft: 50, marginRight: 40}}>
+        
           {favorite ? (
+          
           <Button variant="danger" size="sm" className="fav-button" onClick={() => toggleFavorite()}> Remove favorite</Button>) : (
           <Button variant="success" size="sm" className="fav-button" onClick={() => toggleFavorite()}> Add favorite</Button>)
           }
+         
         </ButtonGroup>
       </Card.Body>
       </Link>

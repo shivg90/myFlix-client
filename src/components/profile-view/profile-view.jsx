@@ -19,6 +19,8 @@ export const ProfileView = ({ movies }) => {
     //const storedUser = null;
     const storedUser = JSON.parse(localStorage.getItem("user"))
     console.log ("user profile view", storedUser);
+ 
+  
 
     // apply filter to favorite movie list
     const favMovies = movies.filter((movie) => storedUser.FavoriteMovies.includes(movie.id));
@@ -53,7 +55,7 @@ export const ProfileView = ({ movies }) => {
           console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
           alert("Update successful, please log in again!");
-          localStorage.clear();
+          //localStorage.clear();
           window.location.reload();
           
         }).catch((e)=>{
@@ -100,7 +102,7 @@ export const ProfileView = ({ movies }) => {
         <Col xs={12} sm={8} md={6} lg={6}>
           <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
             <Card.Body>
-              <UserInfo username={storedUser.Username} email={storedUser.Email} handleDeregister={handleDeregister} /> 
+              <UserInfo username={storedUser.Username} email={storedUser.Email} birthday={storedUser.Birthday} handleDeregister={handleDeregister} /> 
               
             </Card.Body>
           </Card>
@@ -167,7 +169,7 @@ export const ProfileView = ({ movies }) => {
                 Save Changes
               </Button>
               </Form>
-
+          
             </Card.Body>
           </Card>
           )}
