@@ -32,10 +32,10 @@ export const ProfileView = ({ movies }) => {
       e.preventDefault(); 
       
       const data = {
-        Username: username || "",
-        Password: password || "",
-        Email: email || "",
-        Birthday: birthday || "",
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
       };
 
       console.log(data);
@@ -55,6 +55,7 @@ export const ProfileView = ({ movies }) => {
           console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
           alert("Update successful, please log in again!");
+          //localStorage.clear();
           window.location.reload();
           
         }).catch((e)=>{
@@ -101,7 +102,7 @@ export const ProfileView = ({ movies }) => {
         <Col xs={12} sm={8} md={6} lg={6}>
           <Card style={{marginTop: 30, backgroundColor: "whitesmoke"}}>
             <Card.Body>
-              <UserInfo username={storedUser.Username} email={storedUser.Email} handleDeregister={handleDeregister} /> 
+              <UserInfo username={storedUser.Username} email={storedUser.Email} birthday={storedUser.Birthday} handleDeregister={handleDeregister} /> 
               
             </Card.Body>
           </Card>
