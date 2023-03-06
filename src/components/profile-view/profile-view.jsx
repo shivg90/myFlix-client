@@ -41,7 +41,7 @@ export const ProfileView = ({ movies }) => {
 
       fetch(`https://movieapi-9rx2.onrender.com/users/${storedUser.Username}`, {
           
-          method: "PATCH",
+          method: "PACTCH",
           
           headers: {
           Authorization : `Bearer ${localStorage.getItem('token')}`,
