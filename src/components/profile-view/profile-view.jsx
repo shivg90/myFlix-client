@@ -31,17 +31,18 @@ export const ProfileView = ({ movies }) => {
     
       e.preventDefault(); 
       
-      const data = {};
-      if (username !== storedUser.Username) data.Username = username;
-      if (password) data.Password = password;
-      if (email !== storedUser.Email) data.Email = email;
-      if (birthday !== storedUser.Birthday) data.Birthday = birthday;
-      
+      const data = {
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
+      };
+
       console.log(data);
 
       fetch(`https://movieapi-9rx2.onrender.com/users/${storedUser.Username}`, {
           
-          method: "PACTCH",
+          method: "PUT",
           
           headers: {
           Authorization : `Bearer ${localStorage.getItem('token')}`,
@@ -54,7 +55,7 @@ export const ProfileView = ({ movies }) => {
           console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
           alert("Update successful, please log in again!");
-          localStorage.clear();
+          //localStorage.clear();
           window.location.reload();
           
         }).catch((e)=>{
