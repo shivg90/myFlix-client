@@ -70,9 +70,12 @@ export const MovieCard = ({ movie }) => {
     <Card className="h-100" style={{marginTop: 20, backgroundColor: "whitesmoke"}}>
       <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
       <Card.Img className="card-image" variant="top" src={movie.image} />
+      </Link>
+      
       <Card.Body >
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text className="card-text">{movie.description}</Card.Text>
+       
         <ButtonGroup className="d-flex justify-content-center align-items-center" style={{marginLeft: 50, marginRight: 40}}>
         
           {favorite ? (
@@ -83,7 +86,7 @@ export const MovieCard = ({ movie }) => {
          
         </ButtonGroup>
       </Card.Body>
-      </Link>
+      
     </Card>
   );
 };
