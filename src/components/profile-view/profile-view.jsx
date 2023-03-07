@@ -55,9 +55,6 @@ export const ProfileView = ({ movies }) => {
         }).then((response)=>response.json())
           .then((data)=> { 
           console.log(data);
-          //const updatedField = Object.keys(data)[0];
-          //alert(`Updated ${updatedField} successfully! Please log in again!`);
-          //storedUser[updatedField] = data[updatedField];
           localStorage.setItem("user", JSON.stringify(data.user));
           alert("Update successful, please log in again!");
           localStorage.clear();
@@ -141,12 +138,12 @@ export const ProfileView = ({ movies }) => {
               </Form.Group>
 
               <Form.Group controlId="updatePassword">
-                <Form.Label style={{ marginTop: 15 }} >Password:</Form.Label>
+                <Form.Label style={{ marginTop: 15 }} >Password:<span className="required" style={{color: "red"}}>*</span></Form.Label>
                 <Form.Control
                   type="password"
                   value={password}
                   onChange={event => setPassword(event.target.value)}
-                  placeholder="Password"
+                  placeholder="password"
 
                 />
               </Form.Group>
@@ -170,9 +167,13 @@ export const ProfileView = ({ movies }) => {
                 />
               </Form.Group>
 
-              <Button variant="secondary" type="submit" style={{marginTop: 20}} onClick={handleUpdate}>
+              <Button variant="secondary" type="submit" style={{marginTop: 20, marginBottom: 10}} onClick={handleUpdate}>
                 Save Changes
               </Button>
+
+              <Form.Text className="required" style={{color: "red"}}>
+              <p> <span >*</span>Required field </p>
+              </Form.Text>
               </Form>
           
             </Card.Body>
