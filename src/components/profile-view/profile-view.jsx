@@ -4,20 +4,23 @@ import { UserInfo } from "./user-info";
 import { useParams } from "react-router";
 import { Card, Container, Col, Row, Button, Form } from "react-bootstrap";
 import './profile-view.scss';
+import moment from "moment";
 
 
 
 export const ProfileView = ({ movies }) => {
+
+    const storedUser = JSON.parse(localStorage.getItem("user"))
     //const [updatedUser, setUpdatedUser] = useState(false);
     const { movieId } = useParams();
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState(storedUser.Username);
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [birthday, setBirthday] = useState("");
+    const [email, setEmail] = useState(storedUser.Email);
+    const [birthday, setBirthday] = useState(storedUser.Birthday);
     const token = localStorage.getItem("token");
     const [showForm, setShowForm] = useState(false);
     //const storedUser = null;
-    const storedUser = JSON.parse(localStorage.getItem("user"))
+    
     console.log ("user profile view", storedUser);
  
   
@@ -31,18 +34,17 @@ export const ProfileView = ({ movies }) => {
     
       e.preventDefault(); 
       
-      const data = {
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday
-      };
-
+      const data = {};
+      if (username !== storedUser.Username) data.Username = username;
+      if (password) data.Password = password;
+      if (email !== storedUser.Email) data.Email = email;
+      if (birthday !== storedUser.Birthday) data.Birthday = birthday;
+      
       console.log(data);
 
       fetch(`https://movieapi-9rx2.onrender.com/users/${storedUser.Username}`, {
           
-          method: "PUT",
+          method: "PATCH",
           
           headers: {
           Authorization : `Bearer ${localStorage.getItem('token')}`,
@@ -53,9 +55,12 @@ export const ProfileView = ({ movies }) => {
         }).then((response)=>response.json())
           .then((data)=> { 
           console.log(data);
+          //const updatedField = Object.keys(data)[0];
+          //alert(`Updated ${updatedField} successfully! Please log in again!`);
+          //storedUser[updatedField] = data[updatedField];
           localStorage.setItem("user", JSON.stringify(data.user));
           alert("Update successful, please log in again!");
-          //localStorage.clear();
+          localStorage.clear();
           window.location.reload();
           
         }).catch((e)=>{
@@ -160,7 +165,7 @@ export const ProfileView = ({ movies }) => {
                 <Form.Label style={{ marginTop: 15 }} >Birthday: </Form.Label>
                 <Form.Control
                   type="date"
-                  value={birthday}
+                  value={moment(birthday).format("MM-DD-YYYY")}
                   onChange={event => setBirthday(event.target.value)}
                 />
               </Form.Group>
