@@ -1,20 +1,55 @@
-Objective
+# myFlix
 
-Using React, build the client-side for an app called myFlix based on its
-existing server-side code (REST API and database)
+This is the client-side repository that works with the existing [server-side code](https://github.com/shivg90/myflix-app) for the myFlix application.
 
-This app uses Parcel to build the code (Javascript, SCSS, JSX).
+This application renders the interface used to request and receive responses from the server-side.
+I have used the React Library to display several interface views that will handle the data through the (previously defined) REST API endpoints.
 
-How to: install dependencies
+Together with the server-side, the **MERN STACK** has been adopted for this project (MongoDB, Express, React, and Node.js); a full-stack javascript technology.
 
-npm install -g parcel
-Installs Parcel as a global dependency
-(Once app is fully deployed it is recommended to install it locally so that users have the same version as is in your package.json file)
+## Deployment
 
-npm install -save react react-dom
-Installs react package for working with the dom
+You can view the deployed app on [Netlify](https://shivg90-myflix-movie-app.netlify.app/login)
 
-How to: run the app locally
+## Features
 
-Create a src folder in your project directory with three files > index.jsx, index.scss, index.html
-run parcel src/index.html in terminal > instructs parcel to begin building your project from here
+### Main View
+- Returns ALL movies to the user (each movie item with an image, title, and description)
+- Filtering the list of movies with a “search” feature
+- Ability to select a movie for more details
+- Ability to log out
+- Ability to navigate to Profile view
+
+### Single Movie View
+- Returns data (description, genre, director, image) about a single movie to the user
+- Allows users to add a movie to their list of favorites
+
+### Login View
+- Allows users to log in with a username and password
+
+### Signup View
+- Allows new users to register (username, password, email, date of birth)
+
+### Profile View
+- Displays user registration details
+- Allows users to update their info (username, password, email, date of birth)
+- Displays favorite movies
+- Allows users to remove a movie from their list of favorites
+- Allows existing users to deregister
+
+
+## 🚀 Tech Stack
+- React
+- JSX
+- Bootstrap
+- Parcel as the build tool
+
+## Local Environment
+
+- npm install -g parcel
+- npm install -save react react-dom
+- create a src folder in your project directory with three files: index.jsx, index.scss, index.html
+- run parcel src/index.html in terminal to begin parcel build
+- see package.json for additional dependencies
+
+
